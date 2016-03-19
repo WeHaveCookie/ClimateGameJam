@@ -120,7 +120,7 @@ void Building::update(sf::RenderWindow* window)
     m_sprite.setPosition(m_position);
     if(m_level > 0)
     {
-        m_positionBar = sf::Vector2f(m_position.x,m_position.y-PADDING_BAR_BUILDING);
+        m_positionBar = sf::Vector2f(m_position.x + m_sprite.getGlobalBounds().width/2.0,m_position.y-PADDING_BAR_BUILDING);
         m_positionButtonA = sf::Vector2f(m_positionBar.x-m_spriteButtonA.getGlobalBounds().width-PADDING_A_BUILDING,m_positionBar.y-(m_spriteButtonA.getGlobalBounds().width/2.0));
     } else
     {
@@ -159,7 +159,7 @@ void Building::increaseLevel()
     if(m_level == 0)
     {
         m_sprite.setTexture(m_buildTexture);
-        m_position = sf::Vector2f(m_position.x - ((BUILDING_WIDTH/2.0)-(SIGN_WIDTH/2.0)),756.0-BUILDING_HEIGHT);
+        m_position = sf::Vector2f(m_position.x - ((BUILDING_WIDTH/2.0)-(SIGN_WIDTH/2.0)),760.0-BUILDING_HEIGHT);
     }
     if(++m_level > MAX_BUILDING_LEVEL)
     {
@@ -182,7 +182,7 @@ void Building::decreaseLevel()
         m_position = m_posSign;
     } else
     {
-         m_sprite.setTextureRect(sf::IntRect((m_level-1)*BUILDING_WIDTH,0,BUILDING_WIDTH,BUILDING_HEIGHT));
+        m_sprite.setTextureRect(sf::IntRect((m_level-1)*BUILDING_WIDTH,0,BUILDING_WIDTH,BUILDING_HEIGHT));
     }
 }
 

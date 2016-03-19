@@ -6,8 +6,8 @@
 #define DEFAULT_SPEED 1
 
 // Constant for Sprite
-#define SPRITE_WIDTH 64
-#define SPRITE_HEIGHT 64
+#define SPRITE_WIDTH 256
+#define SPRITE_HEIGHT 256
 
 // Constant for Tile
 #define PATTERN_HEIGHT 15
@@ -20,9 +20,9 @@
 
 // Constant for Building
 #define DEFAULT_COST_TO_UPGRADE 100
-#define MAX_BUILDING_LEVEL 3
-#define BUILDING_WIDTH 300
-#define BUILDING_HEIGHT 300
+#define MAX_BUILDING_LEVEL 1
+#define BUILDING_WIDTH 1310
+#define BUILDING_HEIGHT 608
 #define SIGN_HEIGHT 120
 #define SIGN_WIDTH 114
 #define PADDING_BAR_BUILDING 20
@@ -47,5 +47,6 @@ std::string const defaultFilterPath = "Ressources/Filter/";
 std::string const defaultHUDPath = "Ressources/HUD/";
 std::string const defaultFontPath = "Ressources/Font/";
 std::string const defaultBuildingPath = "Ressources/Object/Building/";
-std::string const defaultEventdingPath = "Ressources/Object/Event/";
+std::string const defaultEventPath = "Ressources/Object/Event/";
+std::string const defaultInstaFarmPath = "Ressources/InstaFarm/";
 #endif // CONSTANTES_HPP

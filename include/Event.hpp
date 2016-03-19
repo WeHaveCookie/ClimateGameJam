@@ -10,7 +10,7 @@ class Event : public DrawableObject
         Event(Building* building, bool event, std::string desc, int id, std::string name);
         virtual ~Event();
 
-        void draw(sf::RenderWindow* window);
+        void draw(sf::RenderWindow* window, sf::View view);
         void update(sf::RenderWindow* window);
         inline void trigger() {m_onFocus = true;}
         void launch();

@@ -16,7 +16,7 @@ Event::Event(Building* building, bool event, std::string desc, int id, std::stri
     { // RAISE ERROR
     }
 
-    if(!m_texture.loadFromFile(defaultEventdingPath + "back.png"))
+    if(!m_texture.loadFromFile(defaultEventPath + "back.png"))
     { // RAISE ERROR
     }
     m_texture.setSmooth(true);
@@ -32,7 +32,7 @@ Event::Event(Building* building, bool event, std::string desc, int id, std::stri
 
 
     // X Button
-    if(!m_textureButtonX.loadFromFile(defaultHUDPath + "ButtonX.png"))
+    if(!m_textureButtonX.loadFromFile(defaultHUDPath + "ButtonB.png"))
     { // RAISE ERROR
     }
     m_textureButtonX.setSmooth(true);
@@ -63,9 +63,9 @@ Event::~Event()
     //dtor
 }
 
-void Event::draw(sf::RenderWindow* window)
+void Event::draw(sf::RenderWindow* window, sf::View view)
 {
-    m_position = sf::Vector2f(window->getSize().x/2.0 - m_sprite.getGlobalBounds().width/2.0,window->getSize().y /2 - m_sprite.getGlobalBounds().height/2.0);
+    m_position = sf::Vector2f(window->getSize().x/2.0 - m_sprite.getGlobalBounds().width/2.0 + view.getCenter().x - view.getSize().x/2.0,window->getSize().y /2 - m_sprite.getGlobalBounds().height/2.0);
     m_sprite.setPosition(m_position);
     m_position = sf::Vector2f(m_position.x +  3*TEXT_RESSOURCES_PADDING,m_position.y + m_text.getCharacterSize());
     m_text.setPosition(m_position);
@@ -73,7 +73,7 @@ void Event::draw(sf::RenderWindow* window)
     m_spriteButtonA.setPosition(m_positionButtonA);
     m_positionTextAccept = sf::Vector2f(m_positionButtonA.x +  TEXT_RESSOURCES_PADDING,m_positionButtonA.y+m_spriteButtonA.getGlobalBounds().height);
     m_textAccept.setPosition(m_positionTextAccept);
-    m_positionButtonX = sf::Vector2f(m_positionTextAccept.x + m_textAccept.getGlobalBounds().width + PADDING_A_BUILDING,m_position.y + m_sprite.getGlobalBounds().height*(3/4));
+    m_positionButtonX = sf::Vector2f(m_positionTextAccept.x + m_textAccept.getGlobalBounds().width + PADDING_A_BUILDING ,m_position.y + m_sprite.getGlobalBounds().height*(3/4));
     m_spriteButtonX.setPosition(m_positionButtonX);
     m_positionTextDecline = sf::Vector2f(m_positionButtonX.x+ TEXT_RESSOURCES_PADDING,m_positionButtonX.y+m_spriteButtonX.getGlobalBounds().height);
     m_textDecline.setPosition(m_positionTextDecline);

@@ -32,8 +32,11 @@ void Level::read()
 
 void Level::buildLevel()
 {
-    m_buildings.push_back(new Farm(sf::Vector2f(500.0,756.0-SIGN_HEIGHT),m_controller));
-    m_buildings.push_back(new Storage(sf::Vector2f(800,756.0-SIGN_HEIGHT),m_controller));
+    m_buildings.push_back(new Barn(sf::Vector2f(700.0,756.0-SIGN_HEIGHT),m_controller));
+    m_buildings.push_back(new House(sf::Vector2f(2200,756.0-SIGN_HEIGHT),m_controller));
+    m_buildings.push_back(new ChickenCoop(sf::Vector2f(3500,756.0-SIGN_HEIGHT),m_controller));
+    m_buildings.push_back(new SellStore(sf::Vector2f(5000,756.0-SIGN_HEIGHT),m_controller));
+    m_buildings.push_back(new Piggery(sf::Vector2f(7000,756.0-SIGN_HEIGHT),m_controller));
 }
 
 void Level::draw(sf::RenderWindow* window)

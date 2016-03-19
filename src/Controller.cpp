@@ -5,6 +5,13 @@ Controller::Controller(sf::RenderWindow* window)
     m_window = window;
     //m_menu = new Menu();
 
+    if(!m_introMusic.openFromFile(defaultSoundPath+"intro.ogg"))
+    { // RAISE ERROR
+    }
+
+    if(!m_mainThemeMusic.openFromFile(defaultSoundPath+"theme.ogg"))
+    { // RAISE ERROR
+    }
     init();
 }
 
@@ -24,6 +31,7 @@ int Controller::start()
     bool aPressed = false;
     bool xPressed = false;
     bool yPressed = false;
+    bool bPressed = false;
     bool reload = false;
     int counter = 0;
 
@@ -36,8 +44,10 @@ int Controller::start()
 	sf::Time durationEvent = sf::seconds(1);
 
     // Setting Music
-
-
+    m_introMusic.setVolume(100);
+    m_mainThemeMusic.setVolume(100);
+    m_mainThemeMusic.setLoop(true);
+    m_introMusic.play();
     // Setting Menu
     m_displayMenu = true;
     //m_menu->setEnable(true);
@@ -141,6 +151,11 @@ int Controller::start()
             yPressed = false;
         }
 
+        if(!sf::Joystick::isButtonPressed(0,1) && !sf::Keyboard::isKeyPressed(sf::Keyboard::B))
+        {// B button
+            bPressed = false;
+        }
+
         if(timeSinceLastUpdateEvent > durationEvent + TimePerFrameEvent)
         {
             sf::Time timeSinceLastUpdateEvent = sf::Time::Zero;
@@ -149,8 +164,9 @@ int Controller::start()
                 if(!startPressed)
                 {
                     startPressed = true;
-                    std::vector<Building*> buildings = m_level->getBuilding();
-                    m_events.push_back(new EventBonus(buildings[rand()%buildings.size()],true,"Bonus time",counter++));
+                    m_instaFarm->addPost(new Post("J'adore trop ta ferme !",counter++));
+                    /*std::vector<Building*> buildings = m_level->getBuilding();
+                    m_events.push_back(new EventRessources(buildings[rand()%buildings.size()],true,"Bonus time",this,counter++));*/
                 }
             }
 
@@ -158,21 +174,15 @@ int Controller::start()
             { // X button
                 if(!xPressed)
                 {
-                    if(m_focusEvent == NULL)
-                    {
-                        xPressed = true;
-                        Building* build = m_engine->enterOnBuilding(m_player->getGlobalBounds());
-                        if (build != NULL)
-                        { // Enter on Building
-                            //std::cout << "Decrease on : " << build->getName() << std::endl;
-                            build->addWorker(1);
-                            std::cout << "Add a new worker on " << build->getName() << std::endl;
-                        }
-                    } else
-                    { // Refuse Event
-                        m_focusEvent = NULL;
-                    }
-
+                    xPressed = true;
+                    m_displayInstaHouse = true;
+                    /*Building* build = m_engine->enterOnBuilding(m_player->getGlobalBounds());
+                    if (build != NULL)
+                    { // Enter on Building
+                        //std::cout << "Decrease on : " << build->getName() << std::endl;
+                        build->addWorker(1);
+                        std::cout << "Add a new worker on " << build->getName() << std::endl;
+                    }*/
                 }
             }
 
@@ -181,12 +191,17 @@ int Controller::start()
                 if(!yPressed)
                 {
                     yPressed = true;
-                    Building* build = m_engine->enterOnBuilding(m_player->getGlobalBounds());
+                    if(m_displayInstaHouse)
+                    {
+                        m_displayInstaHouse = false;
+                    }
+                    //m_player->addNotoriety(-10);
+                    /*Building* build = m_engine->enterOnBuilding(m_player->getGlobalBounds());
                     if (build != NULL)
                     { // Enter on Building
                         build->addWorker(-1);
                         std::cout << "Remove a worker on " << build->getName() << std::endl;
-                    }
+                    }*/
                 }
             }
 
@@ -216,20 +231,28 @@ int Controller::start()
 
             }
 
-
+            if(sf::Joystick::isButtonPressed(0,1) || sf::Keyboard::isKeyPressed(sf::Keyboard::B))
+            {// B button
+                if(!bPressed)
+                {
+                    bPressed = true;
+                    if(m_focusEvent != NULL)
+                    { // Refuse Event
+                        m_focusEvent = NULL;
+                    }
+                }
+            }
         } else
         {
             timeSinceLastUpdateEvent += TimePerFrameEvent;
         }
 
-        if(sf::Joystick::isButtonPressed(0,1))
-        {// B button
-            m_window->close();
-            break;
-        }
 
         // REMOVE FOR MENU
         m_displayMenu = false;
+        triggerEvent();
+        updateEvent();
+        updateNotoriety();
 
         m_window->clear();
 
@@ -238,7 +261,7 @@ int Controller::start()
             drawViewGame();
             drawViewHUD();
             m_window->setView(m_viewGame);
-            m_focusEvent->draw(m_window);
+            m_focusEvent->draw(m_window, m_viewGame);
         } else if (reload)
         { // Reload Game
             init();
@@ -265,22 +288,30 @@ int Controller::start()
             {
                 m_displayMenu = false;
             }*/
-        } else if (m_victory)
-        { // Display Victory
-            /*if(m_menu->getState() == MenuState::END)
-            {
-                drawViewMenu();
-            } else
-            {
-                reload = true;
-            }*/
-
-        } else if (m_displayPause)
-        { // Display Pause
+        } else if (m_displayInstaHouse)
+        { // Display Insta House
             drawViewGame();
+            drawViewHUD();
+            drawViewInstaHouse();
+            drawViewPost();
+            speed = sf::Vector2f(sf::Joystick::getAxisPosition(0, sf::Joystick::X), sf::Joystick::getAxisPosition(0, sf::Joystick::Y));
+            timeSinceLastUpdate += tickClock.restart();
 
-            m_window->setView(m_viewMenu);
-            m_window->draw(m_filterPause);
+            while (timeSinceLastUpdate > TimePerFrame)
+            {
+                timeSinceLastUpdate -= TimePerFrame;
+
+                // Update the position of the square according to input from joystick
+                // 60% dead zone
+                if ((speed.x > 20.f || speed.x < -20.f || speed.y > 20.f || speed.y < -20.f) && !m_displayPause)
+                {
+                    if(m_viewPost.getCenter().y-m_viewPost.getSize().y/2.0 + 20*speed.y*TimePerFrame.asSeconds() >= 0
+                       && m_viewPost.getCenter().y + m_viewPost.getSize().y/2.0 + 20*speed.y*TimePerFrame.asSeconds() <= m_instaFarm->getNbrPost()*m_viewPost.getSize().y-100.0f)
+                    m_viewPost.move(0.0, 20*speed.y*TimePerFrame.asSeconds());
+                }
+            }
+
+
         } else
         { // Display game
             if(!m_victory)
@@ -299,18 +330,11 @@ int Controller::start()
                         m_engine->move(m_player,sf::Vector2f(speed.x*TimePerFrame.asSeconds(), speed.y*TimePerFrame.asSeconds()));
                     }
                 }
-
-                // Setting view
-                /*float decPlayer = m_player->getSprite().getGlobalBounds().left - m_viewGame.getCenter().x;
-                if((m_viewGame.getSize().x/2) + decPlayer > (m_viewGame.getSize().x*0.66))
-                {
-                    m_viewGame.move(sf::Vector2f(m_player->getSpeed()*2.0,0));
-                }*/
             }
-            triggerEvent();
-            updateEvent();
             drawViewGame();
             drawViewHUD();
+
+
         }
         m_window->display();
     }
@@ -322,23 +346,31 @@ void Controller::init()
     m_displayMenu = false;
     m_displayPause = false;
     m_victory = false;
+    m_transitionMusic = true;
     m_speedPlayer = DEFAULT_SPEED;
-
+    m_displayInstaHouse = false;
     // Load level
     m_level = new Level(defaultLevelPath+"level.lvl", this);
-    m_player = new Character("tileset.png",this);
+    m_player = new Character("sprite_chara.png",this);
     m_hud = new Hud();
 
     // Setting view
     m_viewGame.reset(sf::FloatRect(0, 0, 1920, 1080));
     m_viewMenu.reset(sf::FloatRect(0,0,1920,1080));
     m_viewHUD.reset(sf::FloatRect(0,0,1920,100));
+    m_viewInstaHouse.reset(sf::FloatRect(0,0,768,725));
+    m_viewPost.reset(sf::FloatRect(0,0,663.0f,565.0f));
 
+    m_viewPost.setViewport(sf::FloatRect(628.0f/1920.0f,302.5f/1080.f,663.0f/1920.0f,565.0f/1080.f));
+    m_viewInstaHouse.setViewport(sf::FloatRect(576.0f/1920.0f,177.5f/1080.0f,768.0f/1920.0f,725.0f/1080.0f));
     m_viewHUD.setViewport(sf::FloatRect(0,0,1920.0f/1920.0f,100.0f/1080.0f));
     // Set engine
     m_engine = new Engine(m_level, &m_viewGame);
 
+    m_instaFarm = new InstaFarm(this);
     std::cout << "Game init done" << std::endl;
+
+
 }
 
 
@@ -349,7 +381,15 @@ void Controller::setLevel(std::string path)
 
 void Controller::updateMusic()
 {
+    if(m_transitionMusic)
+    {
+        if(m_introMusic.getStatus() != sf::SoundSource::Status::Playing)
+        {
+            m_mainThemeMusic.play();
+            m_transitionMusic = false;
+        }
 
+    }
 }
 
 void Controller::drawViewGame()
@@ -370,6 +410,18 @@ void Controller::drawViewHUD()
 {
     m_window->setView(m_viewHUD);
     m_hud->draw(m_window);
+}
+
+void Controller::drawViewInstaHouse()
+{
+    m_window->setView(m_viewInstaHouse);
+    m_instaFarm->draw(m_window);
+}
+
+void Controller::drawViewPost()
+{
+    m_window->setView(m_viewPost);
+    m_instaFarm->drawPost(m_window);
 }
 
 void Controller::increaseRessource(RessourcesType rt, int value)
@@ -403,7 +455,7 @@ void Controller::updateEvent()
             eventToDelete = i;
         } else
         {
-            m_triggeredEvent[i]->draw(m_window);
+            m_triggeredEvent[i]->draw(m_window, m_viewGame);
         }
     }
     if(eventToDelete > -1)
@@ -412,4 +464,14 @@ void Controller::updateEvent()
         m_triggeredEvent.erase(it);
         m_triggeredEvent.shrink_to_fit();
     }
+}
+
+void Controller::updateNotoriety()
+{
+    m_instaFarm->updateNotoriety(m_player->getNotoriety());
+}
+
+void Controller::addNotoriety(int value)
+{
+    m_player->addNotoriety(value);
 }

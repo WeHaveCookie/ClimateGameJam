@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <iostream>
 #include "Structure.hpp"
+#include "Constante.hpp"
 
 class DrawableObject
 {

@@ -5,8 +5,11 @@
 
 #include "Reader.hpp"
 #include "Constante.hpp"
-#include "Farm.hpp"
-#include "Storage.hpp"
+#include "ChickenCoop.hpp"
+#include "Barn.hpp"
+#include "House.hpp"
+#include "Piggery.hpp"
+#include "SellStore.hpp"
 #include "Controller.hpp"
 
 class Controller;
