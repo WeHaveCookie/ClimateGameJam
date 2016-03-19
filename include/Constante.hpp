@@ -32,6 +32,9 @@
 #define PADDING_Y_EVENT_BUILDING 20
 #define INIT_NECESSARY_CLICK 10
 
+//Constant for Event
+#define BONUS_EVENT_RESSOURCE 10
+
 std::string const defaultCharPath = "Ressources/Character/";
 std::string const defaultTilePath = "Ressources/Tileset/";
 std::string const defaultMenuPath = "Ressources/Menu/";
@@ -44,4 +47,5 @@ std::string const defaultFilterPath = "Ressources/Filter/";
 std::string const defaultHUDPath = "Ressources/HUD/";
 std::string const defaultFontPath = "Ressources/Font/";
 std::string const defaultBuildingPath = "Ressources/Object/Building/";
+std::string const defaultEventdingPath = "Ressources/Object/Event/";
 #endif // CONSTANTES_HPP

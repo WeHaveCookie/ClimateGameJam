@@ -20,7 +20,7 @@ class Building : public DrawableObject
         void addWorker(int i);
         void triggerEvent(EventType et, bool b);
         inline void displayAButton(bool b) {m_displayAButton = b;}
-
+        inline RessourcesType getType() {return m_type;}
     protected:
         int m_level;
         int m_costToUpgrade;
@@ -73,6 +73,8 @@ class Building : public DrawableObject
         sf::Time m_timeSinceLastUpdate;
         sf::Time m_TimePerFrame;
         sf::Time m_duration;
+
+        RessourcesType m_type;
 
     private:
 

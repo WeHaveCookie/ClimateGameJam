@@ -14,8 +14,7 @@ class Ressources : public DrawableObject
         virtual ~Ressources();
         void draw(sf::RenderWindow* window);
         void update(sf::RenderWindow* window);
-        void addRessources(int i);
-        bool removeRessources(int i);
+        bool addRessources(int i);
     protected:
         // ICON RESSOURCES
         sf::Texture m_textureIcon;

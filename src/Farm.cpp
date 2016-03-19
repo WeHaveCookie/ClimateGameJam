@@ -5,7 +5,7 @@ Farm::Farm(sf::Vector2f pos, Controller* controller)
 {
     m_name = "Farm";
     m_controller = controller;
-
+    m_type = RessourcesType::WOOD;
     if(!m_buildTexture.loadFromFile(defaultBuildingPath+"farm.png"))
     { // RAISE ERROR
     }
@@ -31,7 +31,7 @@ void Farm::produce(int i)
     m_counter += i;
     if(m_counter > m_necessaryClick)
     {
-        m_controller->increaseRessource(RessourcesType::WOOD);
+        m_controller->increaseRessource(RessourcesType::WOOD,1);
         m_counter -= m_necessaryClick;
     }
 }

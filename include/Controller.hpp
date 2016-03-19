@@ -11,6 +11,9 @@
 #include "Level.hpp"
 #include "Hud.hpp"
 #include "Ressources.hpp"
+#include "Event.hpp"
+#include "EventRessources.hpp"
+#include "EventBonus.hpp"
 
 class Character;
 class Engine;
@@ -31,7 +34,9 @@ class Controller
         inline sf::RenderWindow* getWindow() {return m_window;}
         inline void displayMenu(bool b) {m_displayMenu = b;}
         inline Level* getLevel() {return m_level;}
-        void increaseRessource(RessourcesType rt);
+        void increaseRessource(RessourcesType rt, int value);
+        void triggerEvent();
+        void updateEvent();
 
     protected:
     private:
@@ -57,6 +62,9 @@ class Controller
         Level* m_level;
         Engine* m_engine;
         Hud* m_hud;
+        std::vector<Event*> m_events;
+        std::vector<Event*> m_triggeredEvent;
+        Event* m_focusEvent;
 
         //Sound
         //sf::Music m_mainThemeMusic;

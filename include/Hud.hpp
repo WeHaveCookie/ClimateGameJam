@@ -20,7 +20,7 @@ class Hud : public DrawableObject
         void update(sf::RenderWindow* window);
         void updateAnimation();
         inline std::vector<Ressources*> getRessources() {return m_ressourcesHUD;}
-        void increase(RessourcesType rt);
+        void increase(RessourcesType rt, int value);
     protected:
     private:
         // Function

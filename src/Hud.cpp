@@ -54,18 +54,18 @@ void Hud::build()
 	m_duration = sf::seconds(0.1);
 }
 
-void Hud::increase(RessourcesType rt)
+void Hud::increase(RessourcesType rt, int value)
 {
     switch(rt)
     {
         case RessourcesType::WOOD:
-            m_ressourcesHUD[0]->addRessources(1);
+            m_ressourcesHUD[0]->addRessources(value);
             break;
         case RessourcesType::IRON:
-            m_ressourcesHUD[1]->addRessources(1);
+            m_ressourcesHUD[1]->addRessources(value);
             break;
         case RessourcesType::GOLD:
-            m_ressourcesHUD[2]->addRessources(1);
+            m_ressourcesHUD[2]->addRessources(value);
             break;
         default:
             break;

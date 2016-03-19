@@ -67,25 +67,26 @@ void Ressources::update(sf::RenderWindow* window)
     m_spriteGauge.setPosition(m_positionBar);
 }
 
-void Ressources::addRessources(int i)
+bool Ressources::addRessources(int i)
 {
-    if(m_quantity + i <= m_storeCapacity)
+    if(i >= 0)
     {
-        m_quantity += i;
+        if(m_quantity + i <= m_storeCapacity)
+        {
+            m_quantity += i;
+        } else
+        {
+            m_quantity = m_storeCapacity;
+        }
     } else
     {
-        m_quantity = m_storeCapacity;
+        if(m_quantity + i < 0)
+        {
+            return false;
+        } else
+        {
+            m_quantity += i;
+        }
     }
-}
-
-bool Ressources::removeRessources(int i)
-{
-    if(m_quantity - i < 0)
-    {
-        return false;
-    } else
-    {
-        m_quantity -= i;
-        return true;
-    }
+    return true;
 }

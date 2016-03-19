@@ -72,8 +72,8 @@ Building::Building(sf::Vector2f pos)
     m_spriteGauge.setColor(sf::Color::Blue);
 
     m_timeSinceLastUpdate = sf::Time::Zero;
-	m_TimePerFrame = sf::seconds(1.f / 60.f);
-	m_duration = sf::seconds(1);
+    m_TimePerFrame = sf::seconds(1.f / 60.f);
+    m_duration = sf::seconds(1);
 
 }
 

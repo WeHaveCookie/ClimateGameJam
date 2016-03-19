@@ -25,6 +25,7 @@ int Controller::start()
     bool xPressed = false;
     bool yPressed = false;
     bool reload = false;
+    int counter = 0;
 
 	sf::Clock tickClock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
@@ -83,7 +84,6 @@ int Controller::start()
 
         // Update Music
         updateMusic();
-
         // Victory
 
 
@@ -102,6 +102,7 @@ int Controller::start()
 
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
             {
+
             }
 
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
@@ -142,11 +143,14 @@ int Controller::start()
 
         if(timeSinceLastUpdateEvent > durationEvent + TimePerFrameEvent)
         {
+            sf::Time timeSinceLastUpdateEvent = sf::Time::Zero;
             if(sf::Joystick::isButtonPressed(0,7) || sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
             { // Start button
                 if(!startPressed)
                 {
                     startPressed = true;
+                    std::vector<Building*> buildings = m_level->getBuilding();
+                    m_events.push_back(new EventBonus(buildings[rand()%buildings.size()],true,"Bonus time",counter++));
                 }
             }
 
@@ -154,14 +158,21 @@ int Controller::start()
             { // X button
                 if(!xPressed)
                 {
-                    xPressed = true;
-                    Building* build = m_engine->enterOnBuilding(m_player->getGlobalBounds());
-                    if (build != NULL)
-                    { // Enter on Building
-                        //std::cout << "Decrease on : " << build->getName() << std::endl;
-                        build->addWorker(1);
-                        std::cout << "Add a new worker on " << build->getName() << std::endl;
+                    if(m_focusEvent == NULL)
+                    {
+                        xPressed = true;
+                        Building* build = m_engine->enterOnBuilding(m_player->getGlobalBounds());
+                        if (build != NULL)
+                        { // Enter on Building
+                            //std::cout << "Decrease on : " << build->getName() << std::endl;
+                            build->addWorker(1);
+                            std::cout << "Add a new worker on " << build->getName() << std::endl;
+                        }
+                    } else
+                    { // Refuse Event
+                        m_focusEvent = NULL;
                     }
+
                 }
             }
 
@@ -186,16 +197,26 @@ int Controller::start()
                 // ENTER ON BUILDING
                 if(!aPressed)
                 {
-                    aPressed = true;
-                    Building* build = m_engine->enterOnBuilding(m_player->getGlobalBounds());
-                    if (build != NULL)
-                    { // Enter on Building
-                        //std::cout << "Enter on : " << build->getName() << std::endl;
-                        build->enter();
+                    if(m_focusEvent == NULL)
+                    {
+                        aPressed = true;
+                        Building* build = m_engine->enterOnBuilding(m_player->getGlobalBounds());
+                        if (build != NULL)
+                        { // Enter on Building
+                            //std::cout << "Enter on : " << build->getName() << std::endl;
+                            build->enter();
+                        }
+                    } else
+                    { // Accept event
+                        m_focusEvent->launch();
+                        m_triggeredEvent.push_back(m_focusEvent);
+                        m_focusEvent = NULL;
                     }
                 }
 
             }
+
+
         } else
         {
             timeSinceLastUpdateEvent += TimePerFrameEvent;
@@ -212,7 +233,13 @@ int Controller::start()
 
         m_window->clear();
 
-        if (reload)
+        if(m_focusEvent != NULL)
+        {
+            drawViewGame();
+            drawViewHUD();
+            m_window->setView(m_viewGame);
+            m_focusEvent->draw(m_window);
+        } else if (reload)
         { // Reload Game
             init();
             speed = sf::Vector2f(0.f,0.f);
@@ -280,7 +307,8 @@ int Controller::start()
                     m_viewGame.move(sf::Vector2f(m_player->getSpeed()*2.0,0));
                 }*/
             }
-
+            triggerEvent();
+            updateEvent();
             drawViewGame();
             drawViewHUD();
         }
@@ -344,8 +372,44 @@ void Controller::drawViewHUD()
     m_hud->draw(m_window);
 }
 
-void Controller::increaseRessource(RessourcesType rt)
+void Controller::increaseRessource(RessourcesType rt, int value)
 {
-    std::cout << "Increase ressources" << std::endl;
-    m_hud->increase(rt);
+    m_hud->increase(rt, value);
+}
+
+void Controller::triggerEvent()
+{
+    if(m_events.size() > 0)
+    {
+        if(rand()%1000 < 5)
+        {
+            int ev = rand()%m_events.size();
+            m_focusEvent = m_events[ev];
+            std::vector<Event*>::iterator it= m_events.begin()+ev;
+            m_events.erase(it);
+            m_focusEvent->trigger();
+        }
+    }
+}
+
+void Controller::updateEvent()
+{
+    m_window->setView(m_viewGame);
+    int eventToDelete = -1;
+    for(int i = 0; i < (int)m_triggeredEvent.size(); i++)
+    {
+        if(m_triggeredEvent[i]->getState() == EventState::FINISHED)
+        {
+            eventToDelete = i;
+        } else
+        {
+            m_triggeredEvent[i]->draw(m_window);
+        }
+    }
+    if(eventToDelete > -1)
+    {
+       std::vector<Event*>::iterator it = m_triggeredEvent.begin()+eventToDelete;
+        m_triggeredEvent.erase(it);
+        m_triggeredEvent.shrink_to_fit();
+    }
 }
