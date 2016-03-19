@@ -41,6 +41,7 @@ class Controller
         void updateEvent();
         void updateNotoriety();
         void addNotoriety(int value);
+        void showIconBuild(Building* build);
 
     protected:
     private:
@@ -84,6 +85,17 @@ class Controller
         bool m_victory;
         sf::Sprite m_filterPause;
         sf::Texture m_textureFilterPause;
+
+        sf::Texture m_textureIconBuild;
+        sf::Sprite m_spriteIconBuild;
+        std::vector<sf::Sprite> m_spritesIconsBuilds;
+
+        sf::Texture m_textureIconPad;
+        sf::Sprite m_spriteIconPad;
+
+        sf::Texture m_textureAButton;
+        sf::Sprite m_spriteIconAButton;
+
 
 
         float m_speedPlayer;

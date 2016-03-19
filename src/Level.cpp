@@ -32,11 +32,11 @@ void Level::read()
 
 void Level::buildLevel()
 {
-    m_buildings.push_back(new Barn(sf::Vector2f(700.0,756.0-SIGN_HEIGHT),m_controller));
-    m_buildings.push_back(new House(sf::Vector2f(2200,756.0-SIGN_HEIGHT),m_controller));
-    m_buildings.push_back(new ChickenCoop(sf::Vector2f(3500,756.0-SIGN_HEIGHT),m_controller));
-    m_buildings.push_back(new SellStore(sf::Vector2f(5000,756.0-SIGN_HEIGHT),m_controller));
-    m_buildings.push_back(new Piggery(sf::Vector2f(7000,756.0-SIGN_HEIGHT),m_controller));
+    m_buildings.push_back(new Building(sf::Vector2f(700.0f,760.0f-SIGN_HEIGHT)));
+    m_buildings.push_back(new Building(sf::Vector2f(2400.0f,760.0f-SIGN_HEIGHT)));
+    m_buildings.push_back(new Building(sf::Vector2f(3700.0f,760.0f-SIGN_HEIGHT)));
+    m_buildings.push_back(new Building(sf::Vector2f(5200.0f,760.0f-SIGN_HEIGHT)));
+    m_buildings.push_back(new Building(sf::Vector2f(7200.0f,760.0f-SIGN_HEIGHT)));
 }
 
 void Level::draw(sf::RenderWindow* window)
@@ -45,5 +45,17 @@ void Level::draw(sf::RenderWindow* window)
     for(int i = 0; i < (int)m_buildings.size(); i++)
     {
         m_buildings[i]->draw(window);
+    }
+}
+
+void Level::remplaceBuild(Building* build)
+{
+    for(int i = 0; i < (int)m_buildings.size(); i++)
+    {
+        if(m_buildings[i]->getPosition() == build->getPosition())
+        {
+            m_buildings[i] = build;
+            m_buildings[i]->increaseLevel();
+        }
     }
 }

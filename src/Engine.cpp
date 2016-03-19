@@ -74,11 +74,11 @@ Building* Engine::enterOnBuilding(sf::FloatRect bounds)
     {
         if(collisionAABB(bounds,buildings[i]->getGlobalBounds()))
         {
-            buildings[i]->displayAButton(true);
+            buildings[i]->displayButton(true);
             return buildings[i];
         } else
         {
-            buildings[i]->displayAButton(false);
+            buildings[i]->displayButton(false);
         }
     }
     return NULL;

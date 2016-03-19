@@ -14,13 +14,15 @@ class Building : public DrawableObject
         void update(sf::RenderWindow* window);
         void increaseLevel();
         void decreaseLevel();
-        virtual void enter() = 0;
-        virtual void produce(int i) = 0;
+        virtual void enter() {};
+        virtual void produce(int i) {};
         inline std::string getName() {return m_name;}
         void addWorker(int i);
         void triggerEvent(EventType et, bool b);
-        inline void displayAButton(bool b) {m_displayAButton = b;}
+        inline void displayButton(bool b) {m_displayButton = b;}
         inline RessourcesType getType() {return m_type;}
+        inline int getLevel() {return m_level;}
+        inline void highlighted(bool b) {m_highlighted = b;}
     protected:
         int m_level;
         int m_costToUpgrade;
@@ -43,6 +45,10 @@ class Building : public DrawableObject
         sf::Sprite m_spriteButtonA;
         sf::Vector2f m_positionButtonA;
 
+        // X BUTTON
+        sf::Texture m_textureButtonX;
+        sf::Sprite m_spriteButtonX;
+
         // ICON WORKER
         sf::Texture m_textureWorker;
         sf::Sprite m_spriteWorker;
@@ -58,6 +64,10 @@ class Building : public DrawableObject
         sf::Sprite m_spriteGoodEvent;
         sf::Vector2f m_positionGoodEvent;
 
+        // HIGHLIGHTED
+        sf::Texture m_textureHighlighted;
+        sf::Sprite m_spriteHighlighted;
+
         // FONT
         sf::Font m_font;
         sf::Text m_text;
@@ -68,7 +78,8 @@ class Building : public DrawableObject
         int m_worker;
         bool m_badEvent;
         bool m_goodEvent;
-        bool m_displayAButton;
+        bool m_displayButton;
+        bool m_highlighted;
 
         sf::Time m_timeSinceLastUpdate;
         sf::Time m_TimePerFrame;

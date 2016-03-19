@@ -5,10 +5,11 @@ Building::Building(sf::Vector2f pos)
     m_level = 0;
     m_worker = 0;
     m_counter = 0;
-    m_displayAButton = false;
+    m_displayButton = false;
     m_necessaryClick = INIT_NECESSARY_CLICK;
     m_badEvent = false;
     m_goodEvent = false;
+    m_highlighted = false;
     int m_costToUpgrade = DEFAULT_COST_TO_UPGRADE;
     m_position = pos;
     m_posSign = m_position;
@@ -37,6 +38,13 @@ Building::Building(sf::Vector2f pos)
     }
     m_textureButtonA.setSmooth(true);
     m_spriteButtonA.setTexture(m_textureButtonA);
+
+    // X BUTTON
+    if(!m_textureButtonX.loadFromFile(defaultHUDPath+"buttonX.png"))
+    { // RAISE ERROR
+    }
+    m_textureButtonX.setSmooth(true);
+    m_spriteButtonX.setTexture(m_textureButtonX);
 
 
     if(!m_textureWorker.loadFromFile(defaultBuildingPath+"worker.png"))
@@ -85,16 +93,38 @@ Building::~Building()
 void Building::draw(sf::RenderWindow* window)
 {
     update(window);
-    window->draw(m_sprite);
+    if(m_highlighted)
+    {
+        if(m_level == 0)
+        {
+            if(!m_textureHighlighted.loadFromFile(defaultBuildingPath+"signhi.png"))
+            { // RAISE ERROR
+            }
+            m_textureHighlighted.setSmooth(true);
+            m_spriteHighlighted.setTexture(m_textureHighlighted);
+            m_spriteHighlighted.setTextureRect(sf::IntRect(0,0,114,120));
+        }
+        window->draw(m_spriteHighlighted);
+    } else
+    {
+        window->draw(m_sprite);
+    }
     if(m_level > 0)
     {
         window->draw(m_spriteBar);
         window->draw(m_spriteGauge);
         window->draw(m_text);
     }
-    if(m_displayAButton)
+    if(m_displayButton)
     {
-        window->draw(m_spriteButtonA);
+        if(m_level == 0)
+        {
+            window->draw(m_spriteButtonX);
+        } else
+        {
+            window->draw(m_spriteButtonA);
+        }
+
     }
 
     // DRAW WORKER ICON
@@ -117,6 +147,7 @@ void Building::draw(sf::RenderWindow* window)
 
 void Building::update(sf::RenderWindow* window)
 {
+    m_spriteHighlighted.setPosition(m_position);
     m_sprite.setPosition(m_position);
     if(m_level > 0)
     {
@@ -127,6 +158,7 @@ void Building::update(sf::RenderWindow* window)
         m_positionButtonA = sf::Vector2f(m_position.x+(SIGN_WIDTH/2.0)-(m_spriteButtonA.getGlobalBounds().width/2.0),m_position.y - m_spriteButtonA.getGlobalBounds().height - PADDING_A_BUILDING);
     }
     m_spriteButtonA.setPosition(m_positionButtonA);
+    m_spriteButtonX.setPosition(m_positionButtonA);
     m_spriteBar.setPosition(m_positionBar);
     m_spriteGauge.setPosition(m_positionBar);
 

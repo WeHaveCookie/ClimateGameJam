@@ -26,6 +26,7 @@ class Level : public Reader
         void draw(sf::RenderWindow* window);
 
         sf::Vector2f getSizeLevel() {return m_sizeLevel;}
+        void remplaceBuild(Building* build);
         inline std::vector<Building*> getBuilding() {return m_buildings;}
 
     protected:

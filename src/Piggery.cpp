@@ -6,9 +6,17 @@ Piggery::Piggery(sf::Vector2f pos, Controller* controller)
     m_name = "Piggery";
     m_type = RessourcesType::GOLD;
     m_controller = controller;
-    if(!m_buildTexture.loadFromFile(defaultBuildingPath+"piggery1.png"))
+    if(!m_buildTexture.loadFromFile(defaultBuildingPath+"piggery.png"))
     { // RAISE ERROR
     }
+
+    // HIGHLIGHTED
+    if(!m_textureHighlighted.loadFromFile(defaultBuildingPath+"piggeryhi.png"))
+    { // RAISE ERROR
+    }
+    m_textureHighlighted.setSmooth(true);
+    m_spriteHighlighted.setTexture(m_textureHighlighted);
+
     std::cout << m_name << " build done" << std::endl;
 }
 
