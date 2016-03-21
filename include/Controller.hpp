@@ -15,6 +15,11 @@
 #include "EventRessources.hpp"
 #include "EventBonus.hpp"
 #include "InstaFarm.hpp"
+#include "Chicken.hpp"
+#include "Cow.hpp"
+#include "Pig.hpp"
+#include "ShopHUD.hpp"
+#include "Menu.hpp"
 
 class Character;
 class Engine;
@@ -42,6 +47,8 @@ class Controller
         void updateNotoriety();
         void addNotoriety(int value);
         void showIconBuild(Building* build);
+        void increaseSoundAnimal(RessourcesType rt, int level);
+        inline void showShop(bool b) {m_displayShop = b;}
 
     protected:
     private:
@@ -55,6 +62,7 @@ class Controller
         void drawViewHUD();
         void drawViewInstaHouse();
         void drawViewPost();
+        void drawViewShop();
 
         // Attribut
         sf::RenderWindow* m_window;
@@ -63,15 +71,20 @@ class Controller
         bool m_displayMenu;
         bool m_displayPause;
         bool m_displayInstaHouse;
+        bool m_displayShop;
         sf::View m_viewGame;
         sf::View m_viewMenu;
         sf::View m_viewHUD;
         sf::View m_viewInstaHouse;
         sf::View m_viewPost;
+        sf::View m_viewShop;
+
 
         Level* m_level;
         Engine* m_engine;
         Hud* m_hud;
+        ShopHUD* m_shopHUD;
+        Menu* m_menu;
         std::vector<Event*> m_events;
         std::vector<Event*> m_triggeredEvent;
         Event* m_focusEvent;
@@ -80,6 +93,13 @@ class Controller
         //Sound
         sf::Music m_introMusic;
         sf::Music m_mainThemeMusic;
+        sf::Music m_ambianceMusic;
+        sf::Music m_soundCow;
+        sf::Music m_soundChicken;
+        sf::Music m_soundPig;
+        sf::Music m_soundBuild;
+        sf::Music m_soundError;
+
         bool m_transitionMusic;
 
         bool m_victory;
@@ -95,6 +115,21 @@ class Controller
 
         sf::Texture m_textureAButton;
         sf::Sprite m_spriteIconAButton;
+
+        std::vector<DrawableObject*> m_animals;
+        float m_volumeAmbianceMusique;
+        float m_volumeCow;
+        float m_volumeChicken;
+        float m_volumePig;
+
+
+        // VICTORY
+        sf::Texture m_textureVictory;
+        sf::Sprite m_spriteVictory;
+
+        // LOOSE
+        sf::Texture m_textureLoose;
+        sf::Sprite m_spriteLoose;
 
 
 

@@ -19,9 +19,12 @@ class DrawableObject
         inline MovingState getState() {return m_movingState;}
         inline float getSpeed() {return m_speed;}
         inline sf::FloatRect getGlobalBounds() {return m_sprite.getGlobalBounds();}
+        inline sf::FloatRect getLocalBounds() {return m_sprite.getLocalBounds();}
+        inline sf::Sprite getSprite() {return m_sprite;}
+        virtual void draw(sf::RenderWindow* window) {};
+        virtual void update(sf::RenderWindow* window) {};
     protected:
-        virtual void draw(sf::RenderWindow* window);
-        virtual void update(sf::RenderWindow* window);
+
 
         sf::Texture m_texture;
         sf::Sprite m_sprite;

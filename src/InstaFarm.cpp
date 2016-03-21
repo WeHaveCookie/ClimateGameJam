@@ -9,14 +9,15 @@ InstaFarm::InstaFarm(Controller* controller)
     m_texture.setSmooth(true);
     m_sprite.setTexture(m_texture);
 
-    if(!m_textureBar.loadFromFile(defaultInstaFarmPath+"bar.png"))
+    if(!m_textureCursor.loadFromFile(defaultInstaFarmPath+"cursor.png"))
     { // RAISE ERROR
     }
-    m_textureBar.setSmooth(true);
-    m_spriteBar.setTexture(m_textureBar);
+    m_textureCursor.setSmooth(true);
+    m_spriteCursor.setTexture(m_textureCursor);
+    m_positionCursor = sf::Vector2f(674.0f,136.0f);
+    m_spriteCursor.setPosition(m_positionCursor);
 
-
-    sf::Vector2f m_positionBar = sf::Vector2f(671.0f,136.0f);
+    //sf::Vector2f m_positionBar = sf::Vector2f(671.0f,136.0f);
 
     m_timeSinceLastUpdate = sf::Time::Zero;
     m_TimePerFrame = sf::seconds(1.f / 60.f);
@@ -32,7 +33,7 @@ void InstaFarm::draw(sf::RenderWindow* window)
 {
     update(window);
     window->draw(m_sprite);
-    window->draw(m_spriteBar);
+    window->draw(m_spriteCursor);
 }
 
 void InstaFarm::drawPost(sf::RenderWindow* window)
@@ -52,7 +53,7 @@ void InstaFarm::drawPost(sf::RenderWindow* window)
 
 void InstaFarm::update(sf::RenderWindow* window)
 {
-    m_spriteBar.setPosition(m_positionBar);
+    m_spriteCursor.setPosition(m_positionCursor);
 }
 
 

@@ -5,7 +5,7 @@ House::House(sf::Vector2f pos, Controller* controller)
 {
     m_name = "House";
     m_controller = controller;
-    m_type = RessourcesType::WOOD;
+    m_type = RessourcesType::MONEY;
     if(!m_buildTexture.loadFromFile(defaultBuildingPath+"house.png"))
     { // RAISE ERROR
     }
@@ -31,8 +31,8 @@ void House::enter()
     {
         increaseLevel();
     }*/
-    increaseLevel();
-    produce(1);
+    //increaseLevel();
+    //produce(1);
 }
 
 void House::produce(int i)
@@ -40,7 +40,7 @@ void House::produce(int i)
     m_counter += i;
     if(m_counter > m_necessaryClick)
     {
-        m_controller->increaseRessource(RessourcesType::WOOD,1);
+        m_controller->increaseRessource(m_type,1);
         m_counter -= m_necessaryClick;
     }
 }

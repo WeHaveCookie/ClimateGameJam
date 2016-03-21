@@ -10,23 +10,25 @@ Building::Building(sf::Vector2f pos)
     m_badEvent = false;
     m_goodEvent = false;
     m_highlighted = false;
-    int m_costToUpgrade = DEFAULT_COST_TO_UPGRADE;
-    m_position = pos;
-    m_posSign = m_position;
+    m_costToUpgrade = DEFAULT_COST_TO_UPGRADE;
+    m_type = RessourcesType::NONE;
+
     if(!m_texture.loadFromFile(defaultBuildingPath+"sign.png"))
     { // RAISE ERROR
     }
     m_texture.setSmooth(true);
     m_sprite.setTexture(m_texture);
 
-    if(!m_textureBar.loadFromFile(defaultHUDPath+"ressourcesBAR.png"))
+    m_position = sf::Vector2f(pos.x,GROUND_Y-m_sprite.getGlobalBounds().height);
+    m_posSign = m_position;
+    if(!m_textureBar.loadFromFile(defaultBuildingPath+"Fond_Jauge.png"))
     { // RAISE ERROR
     }
     m_textureBar.setSmooth(true);
     m_spriteBar.setTexture(m_textureBar);
 
 
-    if(!m_textureGauge.loadFromFile(defaultHUDPath+"gauge.png"))
+    if(!m_textureGauge.loadFromFile(defaultBuildingPath+"Jauge.png"))
     { // RAISE ERROR
     }
     m_textureGauge.setSmooth(true);
@@ -39,6 +41,12 @@ Building::Building(sf::Vector2f pos)
     m_textureButtonA.setSmooth(true);
     m_spriteButtonA.setTexture(m_textureButtonA);
 
+    if(!m_textureIconGauge.loadFromFile(defaultBuildingPath+"rouage.png"))
+    { // RAISE ERROR
+    }
+    m_textureIconGauge.setSmooth(true);
+    m_spriteIconGauge.setTexture(m_textureIconGauge);
+
     // X BUTTON
     if(!m_textureButtonX.loadFromFile(defaultHUDPath+"buttonX.png"))
     { // RAISE ERROR
@@ -47,7 +55,7 @@ Building::Building(sf::Vector2f pos)
     m_spriteButtonX.setTexture(m_textureButtonX);
 
 
-    if(!m_textureWorker.loadFromFile(defaultBuildingPath+"worker.png"))
+    if(!m_textureWorker.loadFromFile(defaultBuildingPath+"workerIcon.png"))
     { // RAISE ERROR
     }
     m_textureWorker.setSmooth(true);
@@ -62,12 +70,23 @@ Building::Building(sf::Vector2f pos)
     m_spriteBadEvent.setTexture(m_textureBadEvent);
 
     // ICON GOOD MORAL
-    if(!m_textureGoodEvent.loadFromFile(defaultBuildingPath+"good.png"))
+    if(!m_textureGoodEvent.loadFromFile(defaultShopPath+"bonus.png"))
     { // RAISE ERROR
     }
     m_textureGoodEvent.setSmooth(true);
     m_spriteGoodEvent.setTexture(m_textureGoodEvent);
 
+    if(!m_textureStar.loadFromFile(defaultBuildingPath+"stars.png"))
+    { // RAISE ERROR
+    }
+
+    for(int i = 0; i < MAX_BUILDING_LEVEL; i++)
+    {
+        sf::Sprite spr;
+        spr.setTexture(m_textureStar);
+        spr.setTextureRect(sf::IntRect(0,0,14,13));
+        m_stars.push_back(spr);
+    }
 
 
     if(!m_font.loadFromFile(defaultFontPath + "wonder.TTF"))
@@ -77,7 +96,7 @@ Building::Building(sf::Vector2f pos)
     m_text.setFont(m_font);
     m_text.setCharacterSize(12);
     m_text.setColor(sf::Color::White);
-    m_spriteGauge.setColor(sf::Color::Blue);
+    //m_spriteGauge.setColor(sf::Color::Blue);
 
     m_timeSinceLastUpdate = sf::Time::Zero;
     m_TimePerFrame = sf::seconds(1.f / 60.f);
@@ -102,7 +121,7 @@ void Building::draw(sf::RenderWindow* window)
             }
             m_textureHighlighted.setSmooth(true);
             m_spriteHighlighted.setTexture(m_textureHighlighted);
-            m_spriteHighlighted.setTextureRect(sf::IntRect(0,0,114,120));
+            m_spriteHighlighted.setTextureRect(sf::IntRect(0,0,SIGN_HEIGHT,SIGN_WIDTH));
         }
         window->draw(m_spriteHighlighted);
     } else
@@ -113,7 +132,13 @@ void Building::draw(sf::RenderWindow* window)
     {
         window->draw(m_spriteBar);
         window->draw(m_spriteGauge);
-        window->draw(m_text);
+        window->draw(m_spriteIconGauge);
+        //window->draw(m_text);
+            // DRAW STAR
+        for(int i = 0; i < (int)m_stars.size(); i++)
+        {
+            window->draw(m_stars[i]);
+        }
     }
     if(m_displayButton)
     {
@@ -143,6 +168,9 @@ void Building::draw(sf::RenderWindow* window)
     {
         window->draw(m_spriteBadEvent);
     }
+
+
+
 }
 
 void Building::update(sf::RenderWindow* window)
@@ -151,8 +179,8 @@ void Building::update(sf::RenderWindow* window)
     m_sprite.setPosition(m_position);
     if(m_level > 0)
     {
-        m_positionBar = sf::Vector2f(m_position.x + m_sprite.getGlobalBounds().width/2.0,m_position.y-PADDING_BAR_BUILDING);
-        m_positionButtonA = sf::Vector2f(m_positionBar.x-m_spriteButtonA.getGlobalBounds().width-PADDING_A_BUILDING,m_positionBar.y-(m_spriteButtonA.getGlobalBounds().width/2.0));
+        m_positionBar = sf::Vector2f(m_position.x + m_sprite.getGlobalBounds().width/2.0 - m_spriteBar.getGlobalBounds().width/2.0,m_position.y-PADDING_BAR_BUILDING*3);
+        m_positionButtonA = sf::Vector2f(m_positionBar.x-m_spriteButtonA.getGlobalBounds().width-PADDING_A_BUILDING,m_positionBar.y-(m_spriteButtonA.getGlobalBounds().width/2.0)+PADDING_A_BUILDING*1.5);
     } else
     {
         m_positionButtonA = sf::Vector2f(m_position.x+(SIGN_WIDTH/2.0)-(m_spriteButtonA.getGlobalBounds().width/2.0),m_position.y - m_spriteButtonA.getGlobalBounds().height - PADDING_A_BUILDING);
@@ -161,7 +189,11 @@ void Building::update(sf::RenderWindow* window)
     m_spriteButtonX.setPosition(m_positionButtonA);
     m_spriteBar.setPosition(m_positionBar);
     m_spriteGauge.setPosition(m_positionBar);
-
+    m_spriteIconGauge.setPosition(m_positionBar);
+    for(int i = 0; i < (int)m_stars.size(); i++)
+    {
+        m_stars[i].setPosition(sf::Vector2f(m_positionBar.x + m_spriteBar.getGlobalBounds().width + 10 + i*(PADDING_X_WORKER_BUILDING+m_stars[i].getGlobalBounds().width),m_positionBar.y));
+    }
 
 
     m_text.setPosition(sf::Vector2f(m_positionBar.x+m_spriteBar.getGlobalBounds().width - (m_text.getGlobalBounds().width+TEXT_RESSOURCES_PADDING),m_positionBar.y+m_text.getCharacterSize()));
@@ -191,14 +223,16 @@ void Building::increaseLevel()
     if(m_level == 0)
     {
         m_sprite.setTexture(m_buildTexture);
-        m_position = sf::Vector2f(m_position.x - ((BUILDING_WIDTH/2.0)-(SIGN_WIDTH/2.0)),760.0-BUILDING_HEIGHT);
+        m_position = sf::Vector2f(m_position.x - ((BUILDING_WIDTH/2.0)-(SIGN_WIDTH/2.0)),GROUND_Y-BUILDING_HEIGHT);
     }
     if(++m_level > MAX_BUILDING_LEVEL)
     {
         m_level--;
     }
-    m_sprite.setTextureRect(sf::IntRect((m_level-1)*BUILDING_WIDTH,0,BUILDING_WIDTH,BUILDING_HEIGHT));
-
+    m_sprite.setTextureRect(sf::IntRect((/*m_level*/1-1)*BUILDING_WIDTH,0,BUILDING_WIDTH,BUILDING_HEIGHT));
+    m_stars[m_level-1].setTextureRect(sf::IntRect(14,0,14,13));
+    m_necessaryClick -= 2;
+    m_costToUpgrade += 50;
 }
 
 void Building::decreaseLevel()
@@ -214,8 +248,11 @@ void Building::decreaseLevel()
         m_position = m_posSign;
     } else
     {
-        m_sprite.setTextureRect(sf::IntRect((m_level-1)*BUILDING_WIDTH,0,BUILDING_WIDTH,BUILDING_HEIGHT));
+        m_sprite.setTextureRect(sf::IntRect((/*m_level*/1-1)*BUILDING_WIDTH,0,BUILDING_WIDTH,BUILDING_HEIGHT));
     }
+    m_stars[m_level].setTextureRect(sf::IntRect(0,0,14,13));
+    m_necessaryClick += 2;
+    m_costToUpgrade -= 50;
 }
 
 void Building::addWorker(int i)

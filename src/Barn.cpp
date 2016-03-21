@@ -4,7 +4,7 @@ Barn::Barn(sf::Vector2f pos, Controller* controller)
 :Building(pos)
 {
     m_name = "Barn";
-    m_type = RessourcesType::GOLD;
+    m_type = RessourcesType::MILK;
     m_controller = controller;
     if(!m_buildTexture.loadFromFile(defaultBuildingPath+"barn.png"))
     { // RAISE ERROR
@@ -29,7 +29,10 @@ Barn::~Barn()
 void Barn::enter()
 {
     produce(1);
-    increaseLevel();
+    /*if(m_level != 0)
+    {
+        increaseLevel();
+    }*/
 }
 
 void Barn::produce(int i)
@@ -37,7 +40,7 @@ void Barn::produce(int i)
     m_counter += i;
     if(m_counter > m_necessaryClick)
     {
-        m_controller->increaseRessource(RessourcesType::GOLD,1);
+        m_controller->increaseRessource(m_type,1);
         m_counter -= m_necessaryClick;
     }
 }

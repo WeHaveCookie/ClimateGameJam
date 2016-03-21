@@ -4,9 +4,9 @@
 
 enum MovingState {RIGHT, LEFT, IDLERIGHT, IDLELEFT};
 
-enum MenuState {TITLE, CREDIT, END, NOTHING};
+enum MenuState {TITLE, CREDIT, OPTION, NOTHING};
 
-enum RessourcesType {WOOD, IRON, GOLD};
+enum RessourcesType {NONE, MONEY, MEAT, CORN, MILK, EGG, STORAGE};
 
 enum EventType {GOOD, BAD};
 

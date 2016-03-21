@@ -23,6 +23,8 @@ class Building : public DrawableObject
         inline RessourcesType getType() {return m_type;}
         inline int getLevel() {return m_level;}
         inline void highlighted(bool b) {m_highlighted = b;}
+        inline int getCostToUpgrade() {return m_costToUpgrade;}
+        inline sf::Vector2f getBuildPos() {return m_position;}
     protected:
         int m_level;
         int m_costToUpgrade;
@@ -39,6 +41,10 @@ class Building : public DrawableObject
         // GAUGE BUILDING
         sf::Texture m_textureGauge;
         sf::Sprite m_spriteGauge;
+
+        // ICON GAUGE
+        sf::Texture m_textureIconGauge;
+        sf::Sprite m_spriteIconGauge;
 
         // A BUTTON
         sf::Texture m_textureButtonA;
@@ -67,6 +73,10 @@ class Building : public DrawableObject
         // HIGHLIGHTED
         sf::Texture m_textureHighlighted;
         sf::Sprite m_spriteHighlighted;
+
+        // STAR
+        sf::Texture m_textureStar;
+        std::vector<sf::Sprite> m_stars;
 
         // FONT
         sf::Font m_font;

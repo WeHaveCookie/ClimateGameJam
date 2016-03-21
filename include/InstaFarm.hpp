@@ -32,10 +32,10 @@ class InstaFarm : public DrawableObject
         sf::Sprite m_spriteSep;
         sf::Vector2f m_positionSep;
 
-        // BAR ICON
-        sf::Texture m_textureBar;
-        sf::Sprite m_spriteBar;
-        sf::Vector2f m_positionBar;
+        // CURSOR ICON
+        sf::Texture m_textureCursor;
+        sf::Sprite m_spriteCursor;
+        sf::Vector2f m_positionCursor;
 
         sf::Time m_timeSinceLastUpdate;
         sf::Time m_TimePerFrame;

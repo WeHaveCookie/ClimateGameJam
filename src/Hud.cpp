@@ -17,7 +17,10 @@ void Hud::draw(sf::RenderWindow* window)
     update(window);
     for(int i = 0; i < (int)m_ressourcesHUD.size(); i++)
     {
-        m_ressourcesHUD[i]->draw(window);
+        if(m_displayRessource[i])
+        {
+            m_ressourcesHUD[i]->draw(window);
+        }
     }
 }
 
@@ -40,9 +43,16 @@ void Hud::build()
 {
 
     // Set animation BAR
-    m_ressourcesHUD.push_back(new Wood());
-    m_ressourcesHUD.push_back(new Iron());
-    m_ressourcesHUD.push_back(new Gold());
+    m_ressourcesHUD.push_back(new Money());
+    m_displayRessource.push_back(true);
+    m_ressourcesHUD.push_back(new Meat());
+    m_displayRessource.push_back(false);
+    m_ressourcesHUD.push_back(new Corn());
+    m_displayRessource.push_back(false);
+    m_ressourcesHUD.push_back(new Milk());
+    m_displayRessource.push_back(false);
+    m_ressourcesHUD.push_back(new Egg());
+    m_displayRessource.push_back(false);
 
 
 
@@ -58,14 +68,67 @@ void Hud::increase(RessourcesType rt, int value)
 {
     switch(rt)
     {
-        case RessourcesType::WOOD:
+        case RessourcesType::MONEY:
             m_ressourcesHUD[0]->addRessources(value);
             break;
-        case RessourcesType::IRON:
+        case RessourcesType::MEAT:
             m_ressourcesHUD[1]->addRessources(value);
             break;
-        case RessourcesType::GOLD:
+        case RessourcesType::CORN:
             m_ressourcesHUD[2]->addRessources(value);
+            break;
+        case RessourcesType::MILK:
+            m_ressourcesHUD[3]->addRessources(value);
+            break;
+        case RessourcesType::EGG:
+            m_ressourcesHUD[4]->addRessources(value);
+            break;
+        default:
+            break;
+    }
+}
+
+int Hud::getRessourcesValue(RessourcesType rt)
+{
+    switch(rt)
+    {
+        case RessourcesType::MONEY:
+            return m_ressourcesHUD[0]->getValue();
+            break;
+        case RessourcesType::MEAT:
+            return m_ressourcesHUD[1]->getValue();
+            break;
+        case RessourcesType::CORN:
+            return m_ressourcesHUD[2]->getValue();
+            break;
+        case RessourcesType::MILK:
+            return m_ressourcesHUD[3]->getValue();
+            break;
+        case RessourcesType::EGG:
+            return m_ressourcesHUD[4]->getValue();
+            break;
+        default:
+            break;
+    }
+}
+void Hud::displayRessources(RessourcesType rt, bool b)
+{
+        switch(rt)
+    {
+        case RessourcesType::MONEY:
+            m_displayRessource[0] = b;
+            break;
+        case RessourcesType::MEAT:
+            m_displayRessource[1] = b;
+            break;
+        case RessourcesType::CORN:
+            m_displayRessource[2] = b;
+            break;
+        case RessourcesType::MILK:
+            m_displayRessource[3] = b;
+            break;
+        case RessourcesType::EGG:
+            m_displayRessource[4] = b;
             break;
         default:
             break;

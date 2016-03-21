@@ -31,6 +31,7 @@ class Post : public DrawableObject
         sf::Text m_textPost;
         sf::Vector2f m_positionPost;
 
+
         std::string m_textString;
 
 };

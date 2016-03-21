@@ -1,6 +1,5 @@
 #ifndef CHARACTER_HPP
 #define CHARACTER_HPP
-#include <SFML/Graphics.hpp>
 #include "Constante.hpp"
 #include "DrawableObject.hpp"
 #include "Controller.hpp"

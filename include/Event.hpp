@@ -33,7 +33,6 @@ class Event : public DrawableObject
         int m_timer;
 
 
-
     private:
 
 

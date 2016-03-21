@@ -9,15 +9,15 @@ Character::Character(std::string path, Controller* controller)
     { //RAISE A LOAD TEXTURE EXCEPTION
     }
 
-    m_texture.setSmooth(true);
+    m_texture.setSmooth(false);
     m_sprite.setTexture(m_texture);
-    m_sprite.setTextureRect(sf::IntRect(0,0,64,64));
+    m_sprite.setTextureRect(sf::IntRect(0,0,CHARACTER_WIDTH,CHARACTER_HEIGHT));
     m_notoriety = 100;
 
     // Position init player
-    m_position = sf::Vector2f(100.0,505.0);
+    m_position = sf::Vector2f(100.0,GROUND_Y-m_sprite.getGlobalBounds().height);
     m_sprite.setPosition(m_position);
-    m_speed = 10.0f;
+    m_speed = 5.0f;
     m_onMove = false;
     m_movingState = MovingState::IDLERIGHT;
     m_controller = controller;
@@ -100,60 +100,60 @@ void Character::build()
     sprite.setTexture(m_texture);
 
     // Set animation RIGHT
-    sprite.setTextureRect(sf::IntRect(SPRITE_WIDTH*0,0,SPRITE_WIDTH,SPRITE_HEIGHT));
+    sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*0,0,CHARACTER_WIDTH,CHARACTER_HEIGHT));
     m_animationRIGHT.push_back(sprite);
-    sprite.setTextureRect(sf::IntRect(SPRITE_WIDTH*1,0,SPRITE_WIDTH,SPRITE_HEIGHT));
+    sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*1,0,CHARACTER_WIDTH,CHARACTER_HEIGHT));
     m_animationRIGHT.push_back(sprite);
-    sprite.setTextureRect(sf::IntRect(SPRITE_WIDTH*2,0,SPRITE_WIDTH,SPRITE_HEIGHT));
+    sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*2,0,CHARACTER_WIDTH,CHARACTER_HEIGHT));
     m_animationRIGHT.push_back(sprite);
-    sprite.setTextureRect(sf::IntRect(SPRITE_WIDTH*3,0,SPRITE_WIDTH,SPRITE_HEIGHT));
+    sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*3,0,CHARACTER_WIDTH,CHARACTER_HEIGHT));
     m_animationRIGHT.push_back(sprite);
-    sprite.setTextureRect(sf::IntRect(SPRITE_WIDTH*4,0,SPRITE_WIDTH,SPRITE_HEIGHT));
+    sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*4,0,CHARACTER_WIDTH,CHARACTER_HEIGHT));
     m_animationRIGHT.push_back(sprite);
-    sprite.setTextureRect(sf::IntRect(SPRITE_WIDTH*5,0,SPRITE_WIDTH,SPRITE_HEIGHT));
+    sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*5,0,CHARACTER_WIDTH,CHARACTER_HEIGHT));
     m_animationRIGHT.push_back(sprite);
 
 
     // set animation LEFT
-    sprite.setTextureRect(sf::IntRect(SPRITE_WIDTH*0,SPRITE_HEIGHT*1,SPRITE_WIDTH,SPRITE_HEIGHT));
+    sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*0,CHARACTER_HEIGHT*1,CHARACTER_WIDTH,CHARACTER_HEIGHT));
     m_animationLEFT.push_back(sprite);
-    sprite.setTextureRect(sf::IntRect(SPRITE_WIDTH*1,SPRITE_HEIGHT*1,SPRITE_WIDTH,SPRITE_HEIGHT));
+    sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*1,CHARACTER_HEIGHT*1,CHARACTER_WIDTH,CHARACTER_HEIGHT));
     m_animationLEFT.push_back(sprite);
-    sprite.setTextureRect(sf::IntRect(SPRITE_WIDTH*2,SPRITE_HEIGHT*1,SPRITE_WIDTH,SPRITE_HEIGHT));
+    sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*2,CHARACTER_HEIGHT*1,CHARACTER_WIDTH,CHARACTER_HEIGHT));
     m_animationLEFT.push_back(sprite);
-    sprite.setTextureRect(sf::IntRect(SPRITE_WIDTH*3,SPRITE_HEIGHT*1,SPRITE_WIDTH,SPRITE_HEIGHT));
+    sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*3,CHARACTER_HEIGHT*1,CHARACTER_WIDTH,CHARACTER_HEIGHT));
     m_animationLEFT.push_back(sprite);
-    sprite.setTextureRect(sf::IntRect(SPRITE_WIDTH*4,SPRITE_HEIGHT*1,SPRITE_WIDTH,SPRITE_HEIGHT));
+    sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*4,CHARACTER_HEIGHT*1,CHARACTER_WIDTH,CHARACTER_HEIGHT));
     m_animationLEFT.push_back(sprite);
-    sprite.setTextureRect(sf::IntRect(SPRITE_WIDTH*5,SPRITE_HEIGHT*1,SPRITE_WIDTH,SPRITE_HEIGHT));
+    sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*5,CHARACTER_HEIGHT*1,CHARACTER_WIDTH,CHARACTER_HEIGHT));
     m_animationLEFT.push_back(sprite);
 
     // set animation IDLELEFT
-    sprite.setTextureRect(sf::IntRect(SPRITE_WIDTH*0,SPRITE_HEIGHT*2,SPRITE_WIDTH,SPRITE_HEIGHT));
+    sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*0,CHARACTER_HEIGHT*2,CHARACTER_WIDTH,CHARACTER_HEIGHT));
     m_animationIDLERIGHT.push_back(sprite);
-    sprite.setTextureRect(sf::IntRect(SPRITE_WIDTH*1,SPRITE_HEIGHT*2,SPRITE_WIDTH,SPRITE_HEIGHT));
+    sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*1,CHARACTER_HEIGHT*2,CHARACTER_WIDTH,CHARACTER_HEIGHT));
     m_animationIDLERIGHT.push_back(sprite);
-    sprite.setTextureRect(sf::IntRect(SPRITE_WIDTH*2,SPRITE_HEIGHT*2,SPRITE_WIDTH,SPRITE_HEIGHT));
+    sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*2,CHARACTER_HEIGHT*2,CHARACTER_WIDTH,CHARACTER_HEIGHT));
     m_animationIDLERIGHT.push_back(sprite);
-    sprite.setTextureRect(sf::IntRect(SPRITE_WIDTH*3,SPRITE_HEIGHT*2,SPRITE_WIDTH,SPRITE_HEIGHT));
+    sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*3,CHARACTER_HEIGHT*2,CHARACTER_WIDTH,CHARACTER_HEIGHT));
     m_animationIDLERIGHT.push_back(sprite);
-    sprite.setTextureRect(sf::IntRect(SPRITE_WIDTH*4,SPRITE_HEIGHT*2,SPRITE_WIDTH,SPRITE_HEIGHT));
+    sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*4,CHARACTER_HEIGHT*2,CHARACTER_WIDTH,CHARACTER_HEIGHT));
     m_animationIDLERIGHT.push_back(sprite);
-    sprite.setTextureRect(sf::IntRect(SPRITE_WIDTH*5,SPRITE_HEIGHT*2,SPRITE_WIDTH,SPRITE_HEIGHT));
+    sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*5,CHARACTER_HEIGHT*2,CHARACTER_WIDTH,CHARACTER_HEIGHT));
     m_animationIDLERIGHT.push_back(sprite);
 
      // set animation IDLERIGHT
-    sprite.setTextureRect(sf::IntRect(SPRITE_WIDTH*0,SPRITE_HEIGHT*3,SPRITE_WIDTH,SPRITE_HEIGHT));
+    sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*0,CHARACTER_HEIGHT*3,CHARACTER_WIDTH,CHARACTER_HEIGHT));
     m_animationIDLELEFT.push_back(sprite);
-    sprite.setTextureRect(sf::IntRect(SPRITE_WIDTH*1,SPRITE_HEIGHT*3,SPRITE_WIDTH,SPRITE_HEIGHT));
+    sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*1,CHARACTER_HEIGHT*3,CHARACTER_WIDTH,CHARACTER_HEIGHT));
     m_animationIDLELEFT.push_back(sprite);
-    sprite.setTextureRect(sf::IntRect(SPRITE_WIDTH*2,SPRITE_HEIGHT*3,SPRITE_WIDTH,SPRITE_HEIGHT));
+    sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*2,CHARACTER_HEIGHT*3,CHARACTER_WIDTH,CHARACTER_HEIGHT));
     m_animationIDLELEFT.push_back(sprite);
-    sprite.setTextureRect(sf::IntRect(SPRITE_WIDTH*3,SPRITE_HEIGHT*3,SPRITE_WIDTH,SPRITE_HEIGHT));
+    sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*3,CHARACTER_HEIGHT*3,CHARACTER_WIDTH,CHARACTER_HEIGHT));
     m_animationIDLELEFT.push_back(sprite);
-    sprite.setTextureRect(sf::IntRect(SPRITE_WIDTH*4,SPRITE_HEIGHT*3,SPRITE_WIDTH,SPRITE_HEIGHT));
+    sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*4,CHARACTER_HEIGHT*3,CHARACTER_WIDTH,CHARACTER_HEIGHT));
     m_animationIDLELEFT.push_back(sprite);
-    sprite.setTextureRect(sf::IntRect(SPRITE_WIDTH*5,SPRITE_HEIGHT*3,SPRITE_WIDTH,SPRITE_HEIGHT));
+    sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*5,CHARACTER_HEIGHT*3,CHARACTER_WIDTH,CHARACTER_HEIGHT));
     m_animationIDLELEFT.push_back(sprite);
 
     m_animationCounter = 0;

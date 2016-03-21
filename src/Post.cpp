@@ -5,7 +5,7 @@ Post::Post(std::string textString, int order)
     m_like = 0;
     m_dislike = 0;
     m_order = order;
-    if(!m_texture.loadFromFile(defaultInstaFarmPath+"photo.png"))
+    if(!m_texture.loadFromFile(defaultInstaFarmPath+textString))
     { // RAISE ERROR
     }
     m_texture.setSmooth(true);
@@ -27,15 +27,15 @@ Post::Post(std::string textString, int order)
 
     m_textString = textString;
 
-    m_textPost.setFont(m_font);
+    /*m_textPost.setFont(m_font);
     m_textPost.setCharacterSize(8);
-    m_textPost.setColor(sf::Color::Black);
+    m_textPost.setColor(sf::Color::Black);*/
 
     m_textLike.setPosition(m_positionLike);
     m_textDislike.setPosition(m_positionDislike);
     m_textPost.setPosition(m_positionPost);
 
-    m_textPost.setString(textString);
+    //m_textPost.setString(textString);
 
     std::cout << "Post " << m_order << " build Done" << std::endl;
 
@@ -53,7 +53,6 @@ void Post::draw(sf::RenderWindow* window)
     window->draw(m_sprite);
     window->draw(m_textLike);
     window->draw(m_textDislike);
-    window->draw(m_textPost);
 
 }
 

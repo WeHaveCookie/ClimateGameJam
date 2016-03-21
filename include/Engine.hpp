@@ -1,5 +1,6 @@
 #ifndef ENGINE_HPP
 #define ENGINE_HPP
+#include <math.h>
 #include "Structure.hpp"
 #include "Level.hpp"
 #include "DrawableObject.hpp"
@@ -19,6 +20,7 @@ class Engine
         bool collisionAABB(sf::FloatRect box1, sf::FloatRect box2);
         bool move(DrawableObject* obj, const sf::Vector2f& motion, bool collision = true);
         Building* enterOnBuilding(const sf::FloatRect bounds);
+        std::vector<float> getSoundAmbiance(DrawableObject* obj);
 
         // Inline
     protected:

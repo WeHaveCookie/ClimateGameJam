@@ -31,9 +31,7 @@ class Menu
         // Attribut
         sf::Texture m_texture;
         sf::Sprite m_sprite;
-        std::vector<sf::Sprite> m_animationTITLE;
-        sf::Sprite m_animationCREDIT;
-        std::vector<sf::Sprite> m_animationEND;
+
         int m_animationCounter;
         sf::Time m_timeSinceLastUpdate;
         sf::Time m_TimePerFrame;
@@ -41,5 +39,14 @@ class Menu
         bool m_onAnimation;
         MenuState m_menuState;
         bool m_enable;
+
+        sf::Texture m_textureBack;
+        sf::Texture m_textureMenu;
+        sf::Texture m_textureCredit;
+        sf::Texture m_textureOption;
+        sf::Sprite m_spriteBack;
+        sf::Sprite m_spriteCredit;
+        sf::Sprite m_spriteMenu;
+        sf::Sprite m_spriteOption;
 };
 #endif // MENU_HPP
