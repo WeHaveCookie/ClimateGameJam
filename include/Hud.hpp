@@ -25,6 +25,7 @@ class Hud : public DrawableObject
         inline std::vector<Ressources*> getRessources() {return m_ressourcesHUD;}
         void increase(RessourcesType rt, int value);
         int getRessourcesValue(RessourcesType rt);
+        void increaseStorageCapacity(int value);
     protected:
     private:
         // Function

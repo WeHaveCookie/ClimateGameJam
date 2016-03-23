@@ -16,6 +16,7 @@ House::House(sf::Vector2f pos, Controller* controller)
     }
     m_textureHighlighted.setSmooth(true);
     m_spriteHighlighted.setTexture(m_textureHighlighted);
+    m_displayGauge = false;
 
     std::cout << m_name << " build Done " << std::endl;
 }
@@ -37,10 +38,15 @@ void House::enter()
 
 void House::produce(int i)
 {
-    m_counter += i;
+    /*m_counter += i;
     if(m_counter > m_necessaryClick)
     {
         m_controller->increaseRessource(m_type,1);
         m_counter -= m_necessaryClick;
-    }
+    }*/
+}
+
+void House::trigger()
+{
+    m_controller->increaseStorageCapacity(50*pow(2,m_level));
 }

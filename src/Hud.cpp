@@ -113,7 +113,7 @@ int Hud::getRessourcesValue(RessourcesType rt)
 }
 void Hud::displayRessources(RessourcesType rt, bool b)
 {
-        switch(rt)
+    switch(rt)
     {
         case RessourcesType::MONEY:
             m_displayRessource[0] = b;
@@ -132,5 +132,13 @@ void Hud::displayRessources(RessourcesType rt, bool b)
             break;
         default:
             break;
+    }
+}
+
+void Hud::increaseStorageCapacity(int value)
+{
+    for(int i = 0; i < (int)m_ressourcesHUD.size(); i++)
+    {
+        m_ressourcesHUD[i]->increaseStorageCapacity(value);
     }
 }

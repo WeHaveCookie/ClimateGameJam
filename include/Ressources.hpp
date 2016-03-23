@@ -16,6 +16,7 @@ class Ressources : public DrawableObject
         void update(sf::RenderWindow* window);
         bool addRessources(int i);
         inline int getValue() {return m_quantity;}
+        inline void increaseStorageCapacity(int value) {m_storeCapacity += value;}
     protected:
         // ICON RESSOURCES
         sf::Texture m_textureIcon;

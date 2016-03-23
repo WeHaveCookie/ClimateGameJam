@@ -27,6 +27,7 @@ class Building : public DrawableObject
         inline void highlighted(bool b) {m_highlighted = b;}
         inline int getCostToUpgrade() {return m_costToUpgrade;}
         inline sf::Vector2f getBuildPos() {return m_position;}
+        virtual void trigger(){}
     protected:
         int m_level;
         int m_costToUpgrade;
@@ -92,6 +93,7 @@ class Building : public DrawableObject
         bool m_goodEvent;
         bool m_displayButton;
         bool m_highlighted;
+        bool m_displayGauge;
 
         sf::Time m_timeSinceLastUpdate;
         sf::Time m_TimePerFrame;
@@ -100,6 +102,7 @@ class Building : public DrawableObject
         RessourcesType m_type;
 
         sf::Music m_soundWorkDone;
+        sf::Music m_soundUpgrade;
 
     private:
 

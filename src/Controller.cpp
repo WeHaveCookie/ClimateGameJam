@@ -139,6 +139,9 @@ int Controller::start()
     // Setting Menu
     m_displayMenu = true;
     m_menu->setEnable(true);
+
+    // Starting with Money
+    increaseRessource(RessourcesType::MONEY,AMOUNT_MONEY_START);
     while (m_window->isOpen())
     {
         // Catching event
@@ -269,6 +272,7 @@ int Controller::start()
             { // VICTORY
                 if(!lbPressed)
                 {
+                    increaseRessource(RessourcesType::MONEY,100);
                     lbPressed = true;
                 }
 
@@ -362,25 +366,33 @@ int Controller::start()
                             } else
                             {
 
-                                if (sf::Joystick::getAxisPosition(0,sf::Joystick::PovY) < -50.0 || sf::Keyboard::isKeyPressed(sf::Keyboard::Up) )
+                                if (sf::Joystick::getAxisPosition(0,sf::Joystick::PovY) > 50.0 || sf::Keyboard::isKeyPressed(sf::Keyboard::Up) )
                                 { // down -> Barn
                                     if(!addWorker)
                                     {
-                                        for(int i = 0; i < (int)m_pnjs.size(); i++)
+                                        if(m_hud->getRessourcesValue(RessourcesType::MONEY) >= 5)
                                         {
-                                            if(m_pnjs[i]->isFinished() && !addWorker)
+                                            for(int i = 0; i < (int)m_pnjs.size(); i++)
                                             {
-                                                build->addWorker(m_pnjs[i]);
-                                                addWorker = true;
+                                                if(m_pnjs[i]->isFinished() && !addWorker)
+                                                {
+                                                    build->addWorker(m_pnjs[i]);
+                                                    addWorker = true;
+                                                    increaseRessource(RessourcesType::MONEY,-10);
+                                                }
                                             }
-                                        }
-                                        if(!addWorker)
+                                            if(!addWorker)
+                                            {
+                                                std::cout << "No worker available" << std::endl;
+                                            }
+                                        } else
                                         {
-                                            std::cout << "No worker available" << std::endl;
+                                            std::cout << "Not enought Money need 10$" << std::endl;
                                         }
 
+
                                     }
-                                } else if (sf::Joystick::getAxisPosition(0,sf::Joystick::PovY) > 50.0 || sf::Keyboard::isKeyPressed(sf::Keyboard::Down) )
+                                } else if (sf::Joystick::getAxisPosition(0,sf::Joystick::PovY) < -50.0 || sf::Keyboard::isKeyPressed(sf::Keyboard::Down) )
                                 { // UP -> Piggery
                                     if(!addWorker)
                                     {
@@ -717,7 +729,7 @@ void Controller::init()
 
     m_pnjs.push_back(new Pnj("sprite_emloyer_scale.png",sf::Vector2f(700.0f,0.0f)));
     m_pnjs.push_back(new Pnj("sprite_emloyer_scale.png",sf::Vector2f(200.0f,0.0f)));
-    m_pnjs.push_back(new Pnj("sprite_emloyer_scale.png",sf::Vector2f(500.0f,0.0f)));
+    //m_pnjs.push_back(new Pnj("sprite_emloyer_scale.png",sf::Vector2f(500.0f,0.0f)));
     //m_pnjs.push_back(new Pnj("sprite_emloyer_scale.png",sf::Vector2f(900.0f,0.0f)));
     std::cout << "Game init done " << std::endl;
 
@@ -913,4 +925,9 @@ void Controller::increaseSoundAnimal(RessourcesType rt, int level)
         default:
             break;
     }
+}
+
+void Controller::increaseStorageCapacity(int value)
+{
+    m_hud->increaseStorageCapacity(value);
 }

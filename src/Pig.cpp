@@ -54,4 +54,12 @@ void Pig::build()
     sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*5,CHARACTER_HEIGHT*1,CHARACTER_WIDTH,CHARACTER_HEIGHT));
     m_animationLEFT.push_back(sprite);
 
+    // set animation IDLELEFT
+    sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*0,CHARACTER_HEIGHT*1,CHARACTER_WIDTH,CHARACTER_HEIGHT));
+    m_animationIDLELEFT.push_back(sprite);
+
+    // set animation IDLERIGHT
+    sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*0,0,CHARACTER_WIDTH,CHARACTER_HEIGHT));
+    m_animationIDLERIGHT.push_back(sprite);
+
 }

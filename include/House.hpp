@@ -13,6 +13,7 @@ class House : public Building
         virtual ~House();
         void enter();
         void produce(int i);
+        void trigger();
     protected:
     private:
         Controller* m_controller;

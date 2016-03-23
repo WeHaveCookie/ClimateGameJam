@@ -67,7 +67,7 @@ void Cow::build()
     m_animationLEFT.push_back(sprite);
 
 
-     // set animation IDLELEFT
+    // set animation IDLELEFT
     sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*0,CHARACTER_HEIGHT*3,CHARACTER_WIDTH,CHARACTER_HEIGHT));
     m_animationIDLELEFT.push_back(sprite);
     sprite.setTextureRect(sf::IntRect(CHARACTER_WIDTH*1,CHARACTER_HEIGHT*3,CHARACTER_WIDTH,CHARACTER_HEIGHT));

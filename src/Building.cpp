@@ -9,6 +9,7 @@ Building::Building(sf::Vector2f pos)
     m_badEvent = false;
     m_goodEvent = false;
     m_highlighted = false;
+    m_displayGauge = true;
     m_costToUpgrade = DEFAULT_COST_TO_UPGRADE;
     m_type = RessourcesType::NONE;
 
@@ -16,6 +17,11 @@ Building::Building(sf::Vector2f pos)
     { // RAISE ERROR
     }
     m_soundWorkDone.setVolume(DEFAUT_VOLUME_FEEDBACK);
+
+    if(!m_soundUpgrade.openFromFile(defaultFXPath+"upgrade.ogg"))
+    { // RAISE ERROR
+    }
+    m_soundUpgrade.setVolume(DEFAUT_VOLUME_FEEDBACK);
 
     if(!m_texture.loadFromFile(defaultBuildingPath+"sign.png"))
     { // RAISE ERROR
@@ -134,9 +140,12 @@ void Building::draw(sf::RenderWindow* window)
     }
     if(m_level > 0)
     {
-        window->draw(m_spriteBar);
-        window->draw(m_spriteGauge);
-        window->draw(m_spriteIconGauge);
+        if(m_displayGauge)
+        {
+            window->draw(m_spriteBar);
+            window->draw(m_spriteGauge);
+            window->draw(m_spriteIconGauge);
+        }
         //window->draw(m_text);
             // DRAW STAR
         for(int i = 0; i < (int)m_stars.size(); i++)
@@ -151,9 +160,11 @@ void Building::draw(sf::RenderWindow* window)
             window->draw(m_spriteButtonX);
         } else
         {
-            window->draw(m_spriteButtonA);
+            if(m_displayGauge)
+            {
+                window->draw(m_spriteButtonA);
+            }
         }
-
     }
 
     // DRAW WORKER ICON
@@ -256,7 +267,9 @@ void Building::increaseLevel()
     m_sprite.setTextureRect(sf::IntRect((/*m_level*/1-1)*BUILDING_WIDTH,0,BUILDING_WIDTH,BUILDING_HEIGHT));
     m_stars[m_level-1].setTextureRect(sf::IntRect(14,0,14,13));
     m_necessaryClick -= 2;
-    m_costToUpgrade += 50;
+    m_costToUpgrade += 50*pow(2,m_level);
+    m_soundUpgrade.play();
+    this->trigger();
 }
 
 void Building::decreaseLevel()

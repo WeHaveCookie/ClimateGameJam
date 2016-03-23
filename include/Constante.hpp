@@ -32,6 +32,7 @@
 // Constant for Ressources
 #define INIT_STORE_CAPACITY 100
 #define TEXT_RESSOURCES_PADDING 10
+#define AMOUNT_MONEY_START 50
 
 // Constant for Building
 #define DEFAULT_COST_TO_UPGRADE 0

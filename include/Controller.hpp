@@ -50,6 +50,7 @@ class Controller
         void addNotoriety(int value);
         void showIconBuild(Building* build);
         void increaseSoundAnimal(RessourcesType rt, int level);
+        void increaseStorageCapacity(int value);
         inline void showShop(bool b) {m_displayShop = b;}
 
     protected:
