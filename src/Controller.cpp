@@ -1,10 +1,10 @@
 #include "../include/Controller.hpp"
+int Pnj::newUID = 0;
 
 Controller::Controller(sf::RenderWindow* window)
 {
     m_window = window;
     //m_menu = new Menu();
-
 
 
     if(!m_introMusic.openFromFile(defaultSoundPath+"intro.ogg"))
@@ -209,7 +209,7 @@ int Controller::start()
 
             // Catch gamepad event
 
-            if (!sf::Joystick::isButtonPressed(0, 0) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+            if (!sf::Joystick::isButtonPressed(0, 0) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A))
             { // A RELEASE
                 aPressed = false;
             }
@@ -319,7 +319,8 @@ int Controller::start()
                                     build->highlighted(false);
                                     m_animals.push_back(new Cow("cow.png",build->getPosition()));
                                     m_instaFarm->addPost(new Post("photo_vache.png",counter++));
-                                    m_hud->displayRessources(RessourcesType::MILK,true);                                increaseRessource(RessourcesType::MONEY,50);
+                                    m_hud->displayRessources(RessourcesType::MILK,true);
+                                    //increaseRessource(RessourcesType::MONEY,50);
                                     displayIconBuild = false;
                                     m_soundBuild.play();
                                 } else if (sf::Joystick::getAxisPosition(0,sf::Joystick::PovY) > 50.0 || sf::Keyboard::isKeyPressed(sf::Keyboard::Up) )
@@ -330,6 +331,7 @@ int Controller::start()
                                     m_instaFarm->addPost(new Post("photo_cochon.png",counter++));
                                     m_hud->displayRessources(RessourcesType::MEAT,true);
                                     displayIconBuild = false;
+                                    addWorker = true;
                                     m_soundBuild.play();
                                 } else if (sf::Joystick::getAxisPosition(0,sf::Joystick::PovX) < -50.0 || sf::Keyboard::isKeyPressed(sf::Keyboard::Left) )
                                 { // LEFT -> House
@@ -360,18 +362,29 @@ int Controller::start()
                             } else
                             {
 
-                                if (sf::Joystick::getAxisPosition(0,sf::Joystick::PovY) < -50.0 || sf::Keyboard::isKeyPressed(sf::Keyboard::Down) )
+                                if (sf::Joystick::getAxisPosition(0,sf::Joystick::PovY) < -50.0 || sf::Keyboard::isKeyPressed(sf::Keyboard::Up) )
                                 { // down -> Barn
                                     if(!addWorker)
                                     {
-                                        build->addWorker(-1);
-                                        addWorker = true;
+                                        for(int i = 0; i < (int)m_pnjs.size(); i++)
+                                        {
+                                            if(m_pnjs[i]->isFinished() && !addWorker)
+                                            {
+                                                build->addWorker(m_pnjs[i]);
+                                                addWorker = true;
+                                            }
+                                        }
+                                        if(!addWorker)
+                                        {
+                                            std::cout << "No worker available" << std::endl;
+                                        }
+
                                     }
-                                } else if (sf::Joystick::getAxisPosition(0,sf::Joystick::PovY) > 50.0 || sf::Keyboard::isKeyPressed(sf::Keyboard::Up) )
+                                } else if (sf::Joystick::getAxisPosition(0,sf::Joystick::PovY) > 50.0 || sf::Keyboard::isKeyPressed(sf::Keyboard::Down) )
                                 { // UP -> Piggery
                                     if(!addWorker)
                                     {
-                                        build->addWorker(1);
+                                        build->removeWorker();
                                         addWorker = true;
                                     }
 
@@ -635,7 +648,7 @@ int Controller::start()
                     }
                 }
             }
-            m_level->MoveCloud(sf::Vector2f(rand()%2-1,0.0));
+            m_level->MoveCloud(sf::Vector2f(-0.2,0.0));
             drawViewGame();
             drawViewHUD();
             if (displayIconBuild)
@@ -701,7 +714,12 @@ void Controller::init()
     m_spritesIconsBuilds.push_back(m_spriteIconBuild);
 
     m_instaFarm = new InstaFarm(this);
-    std::cout << "Game init done" << std::endl;
+
+    m_pnjs.push_back(new Pnj("sprite_emloyer_scale.png",sf::Vector2f(700.0f,0.0f)));
+    m_pnjs.push_back(new Pnj("sprite_emloyer_scale.png",sf::Vector2f(200.0f,0.0f)));
+    m_pnjs.push_back(new Pnj("sprite_emloyer_scale.png",sf::Vector2f(500.0f,0.0f)));
+    //m_pnjs.push_back(new Pnj("sprite_emloyer_scale.png",sf::Vector2f(900.0f,0.0f)));
+    std::cout << "Game init done " << std::endl;
 
 
 }
@@ -743,9 +761,19 @@ void Controller::drawViewGame()
     {
         if(rand()%1000 < 5)
         {
-            m_animals[i]->move(sf::Vector2f((rand()%10-5)*(rand()%20+10),0.0f));
+            //m_animals[i]->move(sf::Vector2f((rand()%10-5)*(rand()%20+10),0.0f));
+            m_engine->move(m_animals[i],sf::Vector2f((rand()%10-5)*(rand()%20+10),0.0f));
         }
         m_animals[i]->draw(m_window);
+    }
+    for(int i = 0; i < (int)m_pnjs.size(); i++)
+    {
+        if(rand()%1000 < 5)
+        {
+            //m_pnjs[i]->move(sf::Vector2f((rand()%10-5)*(rand()%20+10),0.0f));
+            m_engine->move(m_pnjs[i],sf::Vector2f((rand()%10-5)*(rand()%20+10),0.0f));
+        }
+        m_pnjs[i]->draw(m_window);
     }
     m_player->draw(m_window);
 }

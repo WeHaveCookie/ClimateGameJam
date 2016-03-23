@@ -19,4 +19,3 @@ class Piggery : public Building
 #endif // PIGGERY_HPP
 #include "Building.hpp"
 #include "Controller.hpp"
-class Controller;

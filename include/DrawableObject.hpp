@@ -21,6 +21,8 @@ class DrawableObject
         inline sf::FloatRect getGlobalBounds() {return m_sprite.getGlobalBounds();}
         inline sf::FloatRect getLocalBounds() {return m_sprite.getLocalBounds();}
         inline sf::Sprite getSprite() {return m_sprite;}
+        inline sf::Vector2f getOriginPosition() {return m_originPosition;}
+        inline void setOriginPosition(sf::Vector2f pos) {m_originPosition = sf::Vector2f(pos.x,GROUND_Y-m_sprite.getGlobalBounds().height);}
         virtual void draw(sf::RenderWindow* window) {};
         virtual void update(sf::RenderWindow* window) {};
     protected:
@@ -31,6 +33,7 @@ class DrawableObject
         sf::Vector2f m_position;
         float m_speed;
         MovingState m_movingState;
+        sf::Vector2f m_originPosition;
     private:
 };
 #endif // DRAWABLEOBJECT_HPP

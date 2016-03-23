@@ -14,4 +14,6 @@ enum EventState {WAITED, TRIGGERED, ACCEPTED, FINISHED};
 
 enum PostType {LIKE, DISLIKE};
 
+enum WorkerState {WORK, UNWORK};
+
 #endif // STRUCTURE_H

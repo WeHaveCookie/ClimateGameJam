@@ -3,7 +3,6 @@
 Building::Building(sf::Vector2f pos)
 {
     m_level = 0;
-    m_worker = 0;
     m_counter = 0;
     m_displayButton = false;
     m_necessaryClick = INIT_NECESSARY_CLICK;
@@ -12,6 +11,11 @@ Building::Building(sf::Vector2f pos)
     m_highlighted = false;
     m_costToUpgrade = DEFAULT_COST_TO_UPGRADE;
     m_type = RessourcesType::NONE;
+
+    if(!m_soundWorkDone.openFromFile(defaultFXPath+"workDone.ogg"))
+    { // RAISE ERROR
+    }
+    m_soundWorkDone.setVolume(DEFAUT_VOLUME_FEEDBACK);
 
     if(!m_texture.loadFromFile(defaultBuildingPath+"sign.png"))
     { // RAISE ERROR
@@ -153,7 +157,7 @@ void Building::draw(sf::RenderWindow* window)
     }
 
     // DRAW WORKER ICON
-    for(int i = 0; i < m_worker; i++)
+    for(int i = 0; i < (int)m_workers.size(); i++)
     {
         m_positionWorker = sf::Vector2f(m_positionBar.x+i*(m_spriteWorker.getGlobalBounds().width+PADDING_X_WORKER_BUILDING),m_positionBar.y-m_spriteWorker.getGlobalBounds().height-(i%2)*PADDING_Y_WORKER_BUILDING-PADDING_Y_WORKER_BUILDING);
         m_spriteWorker.setPosition(m_positionWorker);
@@ -168,9 +172,6 @@ void Building::draw(sf::RenderWindow* window)
     {
         window->draw(m_spriteBadEvent);
     }
-
-
-
 }
 
 void Building::update(sf::RenderWindow* window)
@@ -205,11 +206,34 @@ void Building::update(sf::RenderWindow* window)
     if(m_timeSinceLastUpdate > m_duration + m_TimePerFrame)
     {
         // INCREMENT WITH WORKER
-        produce(m_worker);
+        produce((int)m_workers.size());
         m_timeSinceLastUpdate = sf::Time::Zero;
     } else
     {
         m_timeSinceLastUpdate += m_TimePerFrame;
+    }
+
+    std::vector<int> deleteWorker;
+    for(int i = 0; i < (int)m_workers.size(); i++)
+    {
+        if(m_workers[i]->isFinished())
+        {
+            m_soundWorkDone.play();
+            deleteWorker.push_back(i);
+            std::cout << "Building : Worker " << m_workers[i]->getUID() << " as finished " << std::endl;
+        }
+    }
+    int eraseCount = 0;
+    for(int i = 0; i < (int)deleteWorker.size(); i++)
+    {
+        std::vector<Pnj*>::iterator it = m_workers.begin()+deleteWorker[i]-eraseCount++;
+        std::cout << "Erase worker " << m_workers[i]->getUID() << std::endl;
+        m_workers.erase(it);
+    }
+    if((int)deleteWorker.size() > 0)
+    {
+        m_workers.shrink_to_fit();
+        std::cout << "Shrink to fit done" << std::endl;
     }
 
     m_positionGoodEvent = sf::Vector2f(m_positionBar.x,m_positionBar.y - m_spriteWorker.getGlobalBounds().height - 2*PADDING_Y_WORKER_BUILDING - PADDING_Y_EVENT_BUILDING - m_spriteGoodEvent.getGlobalBounds().height);
@@ -255,15 +279,23 @@ void Building::decreaseLevel()
     m_costToUpgrade -= 50;
 }
 
-void Building::addWorker(int i)
+void Building::addWorker(Pnj* worker)
 {
-    m_worker += i;
-    if(m_worker > 3)
+    if(m_workers.size()<=3)
     {
-        m_worker = 3;
-    } else if (m_worker < 0)
+        worker->setOriginPosition(sf::Vector2f(m_position.x + BUILDING_WIDTH/2+rand()%80-40,0.0f));
+        worker->startWork();
+        m_workers.push_back(worker);
+    }
+}
+
+void Building::removeWorker()
+{
+    if(m_workers.size() > 0)
     {
-        m_worker = 0;
+        Pnj* worker = m_workers[m_workers.size()-1];
+        worker->finishWork();
+        m_workers.pop_back();
     }
 }
 

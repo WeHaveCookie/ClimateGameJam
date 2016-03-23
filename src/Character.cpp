@@ -96,7 +96,6 @@ void Character::updatePosition()
 void Character::build()
 {
     sf::Sprite sprite;
-    m_texture.setSmooth(true);
     sprite.setTexture(m_texture);
 
     // Set animation RIGHT
