@@ -11,12 +11,12 @@ Il doit aussi gérer Instafarm, un réseau social intégré au jeu qui va déter
 Le but de Rural Network est de faire comprendre au joueur que produire vert est possible mais difficile au vu de la pression effectuée par les grands groupes tout en lui faisant comprendre que chacune de ses actions même mineures peuvent avoir un impact nocif direct.
 
 <b>Dévelopé lors de la Climate Game Jam 2016 par l'équipe :</b>
-Aël Rox : Game Design
-Yann Fieux : Game Design
-Hedrian Naried : Game Design
-Damein Radatovic : Game Design
-El Vicolito : Sound Design
-Quentin Gerry : Lead Developer
+- Aël Rox : Game Design
+- Yann Fieux : Game Design
+- Hedrian Naried : Game Design
+- Damein Radatovic : Game Design
+- El Vicolito : Sound Design
+- Quentin Gerry : Lead Developer
 
 <b>Prix et distinction :</b>
   - Grand prix du jury
