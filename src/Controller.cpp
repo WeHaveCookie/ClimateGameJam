@@ -376,9 +376,12 @@ int Controller::start()
                                             {
                                                 if(m_pnjs[i]->isFinished() && !addWorker)
                                                 {
-                                                    build->addWorker(m_pnjs[i]);
-                                                    addWorker = true;
-                                                    increaseRessource(RessourcesType::MONEY,-10);
+                                                    if(build->isWorkable())
+                                                    {
+                                                        build->addWorker(m_pnjs[i]);
+                                                        addWorker = true;
+                                                        increaseRessource(RessourcesType::MONEY,-10);
+                                                    }
                                                 }
                                             }
                                             if(!addWorker)
@@ -540,7 +543,7 @@ int Controller::start()
             drawViewGame();
             drawViewHUD();
             m_window->setView(m_viewGame);
-            m_spriteVictory.setPosition(sf::Vector2f(m_viewGame.getCenter().x-m_viewGame.getSize().x/2.0,m_viewGame.getCenter().y-m_viewGame.getSize().y/2.0));
+            m_spriteLoose.setPosition(sf::Vector2f(m_viewGame.getCenter().x-m_viewGame.getSize().x/2.0,m_viewGame.getCenter().y-m_viewGame.getSize().y/2.0));
             m_window->draw(m_spriteLoose);
         } else if(m_focusEvent != NULL)
         {

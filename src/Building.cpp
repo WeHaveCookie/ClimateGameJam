@@ -342,3 +342,8 @@ void Building::triggerEvent(EventType et, bool b)
             break;
     }
 }
+
+bool Building::isWorkable()
+{
+    return !(m_type == RessourcesType::MONEY || m_type == RessourcesType::NONE || m_type == RessourcesType::STORAGE);
+}

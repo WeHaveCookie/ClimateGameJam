@@ -27,6 +27,7 @@ class Building : public DrawableObject
         inline void highlighted(bool b) {m_highlighted = b;}
         inline int getCostToUpgrade() {return m_costToUpgrade;}
         inline sf::Vector2f getBuildPos() {return m_position;}
+        bool isWorkable();
         virtual void trigger(){}
     protected:
         int m_level;
