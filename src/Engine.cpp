@@ -55,15 +55,26 @@ bool Engine::move(DrawableObject* obj, const sf::Vector2f& motion, const bool co
     {
         //if(m_viewGame->getCenter().x - (m_viewGame->getSize().x/2.0) + realMotion.x < 0)
         //std::cout << "Pos player x : " << floor(posPlayer.x + realMotion.x + (SPRITE_WIDTH/2.0)) << " | Center View x : " << m_viewGame->getCenter().x << std::endl;
-        if(m_viewGame->getCenter().x - (m_viewGame->getSize().x/2.0) + realMotion.x*obj->getSpeed() >= 0 && m_viewGame->getCenter().x + (m_viewGame->getSize().x/2.0) + realMotion.x*obj->getSpeed() <= m_sizeLevel.x
+        if(dynamic_cast<Pnj*>(obj) || dynamic_cast<Animal*>(obj))
+        {
+            if(obj->getPosition().x < obj->getOriginPosition().x-BUILDING_WIDTH || obj->getPosition().x > obj->getOriginPosition().x+BUILDING_WIDTH)
+            {
+                realMotion.x = obj->getOriginPosition().x - obj->getPosition().x;
+            }
+            obj->move(realMotion);
+        } else if(dynamic_cast<Character*>(obj))
+        {
+            if(m_viewGame->getCenter().x - (m_viewGame->getSize().x/2.0) + realMotion.x*obj->getSpeed() >= 0
+           && m_viewGame->getCenter().x + (m_viewGame->getSize().x/2.0) + realMotion.x*obj->getSpeed() <= m_sizeLevel.x
            && posPlayer.x + (CHARACTER_WIDTH/2.0) >= m_viewGame->getCenter().x - CHARACTER_WIDTH
            && posPlayer.x + (CHARACTER_WIDTH/2.0) <= m_viewGame->getCenter().x + CHARACTER_WIDTH)
-        {
-            m_viewGame->move(realMotion*obj->getSpeed());
-            m_level->moveBackGround(realMotion*obj->getSpeed());
+            {
+                m_viewGame->move(realMotion*obj->getSpeed());
+                m_level->moveBackGround(realMotion*obj->getSpeed());
+            }
+            enterOnBuilding(obj->getGlobalBounds());
+            obj->move(realMotion);
         }
-        enterOnBuilding(obj->getGlobalBounds());
-        obj->move(realMotion);
         return true;
     }
 }

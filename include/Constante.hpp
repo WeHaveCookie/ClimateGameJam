@@ -52,12 +52,15 @@
 // Constant for sound
 #define DEFAULT_VOLUME_MAINTHEME 40
 #define MAX_VOLUME_AMBIANCE 70
-#define DEFAULT_VOLUME_ANIMAL 100
+#define DEFAULT_VOLUME_ANIMAL 50
 #define NBR_ANIMALS 6
 #define DEFAUT_VOLUME_FEEDBACK 60
 
-//Constant for Event
+// Constant for Event
 #define BONUS_EVENT_RESSOURCE 10
+
+// Constant for Worker
+#define DEFAULT_TIME_WORKER 10
 
 std::string const defaultCharPath = "Ressources/Character/";
 std::string const defaultTilePath = "Ressources/Tileset/";

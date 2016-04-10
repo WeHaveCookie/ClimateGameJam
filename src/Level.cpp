@@ -153,7 +153,6 @@ void Level::draw(sf::RenderWindow* window)
     {
         m_buildings[i]->draw(window);
     }
-
 }
 
 void Level::remplaceBuild(Building* build)
@@ -172,7 +171,40 @@ void Level::MoveCloud(sf::Vector2f motion)
 {
     for(int i = 0; i < (int)m_clouds.size(); i++)
     {
-        m_clouds[i].move(sf::Vector2f(motion.x*((rand()%100)/50),0.0));
+        m_clouds[i].move(sf::Vector2f(motion.x,0.0));
+        if (m_clouds[i].getPosition().x+m_clouds[i].getLocalBounds().width < 0)
+        {
+            int select = rand()%4;
+            sf::Sprite spr;
+            spr.setTexture(m_textureCloud);
+            switch(select)
+            {
+                case 0:
+                    spr.setTextureRect(sf::IntRect(0,0,256,91));
+                    //std::cout << "On ajoute un cloud 1" << std::endl;
+                    break;
+                case 1:
+                    spr.setTextureRect(sf::IntRect(256,0,256,91));
+                    //std::cout << "On ajoute un cloud 2" << std::endl;
+                    break;
+                case 2:
+                    spr.setTextureRect(sf::IntRect(256*2,0,256,91));
+                    //std::cout << "On ajoute un cloud 3 " << std::endl;
+                    break;
+                case 3:
+                    spr.setTextureRect(sf::IntRect(256*3,0,256,91));
+                    //std::cout << "On ajoute un cloud 4 " << std::endl;
+                    break;
+                default:
+                    spr.setTextureRect(sf::IntRect(0,0,256,91));
+                    //std::cout << "On ajoute un cloud default" << std::endl;
+                    break;
+            }
+            m_textureCloud.setSmooth(true);
+            spr.setTexture(m_textureCloud);
+            spr.setPosition(sf::Vector2f(SIZE_MAP_X,rand()%600));
+            m_clouds[i] = spr;
+        }
     }
 }
 

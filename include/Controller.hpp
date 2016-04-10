@@ -20,6 +20,8 @@
 #include "Pig.hpp"
 #include "ShopHUD.hpp"
 #include "Menu.hpp"
+#include "Pnj.hpp"
+#include "Animal.hpp"
 
 class Character;
 class Engine;
@@ -89,6 +91,7 @@ class Controller
         std::vector<Event*> m_triggeredEvent;
         Event* m_focusEvent;
         InstaFarm* m_instaFarm;
+        std::vector<Pnj*> m_pnjs;
 
         //Sound
         sf::Music m_introMusic;
@@ -116,7 +119,7 @@ class Controller
         sf::Texture m_textureAButton;
         sf::Sprite m_spriteIconAButton;
 
-        std::vector<DrawableObject*> m_animals;
+        std::vector<Animal*> m_animals;
         float m_volumeAmbianceMusique;
         float m_volumeCow;
         float m_volumeChicken;

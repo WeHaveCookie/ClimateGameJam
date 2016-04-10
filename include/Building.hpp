@@ -1,8 +1,9 @@
 #ifndef BUILDING_HPP
 #define BUILDING_HPP
+#include <SFML/Audio.hpp>
 
 #include "DrawableObject.hpp"
-#include "Constante.hpp"
+#include "Pnj.hpp"
 
 
 class Building : public DrawableObject
@@ -17,7 +18,8 @@ class Building : public DrawableObject
         virtual void enter() {};
         virtual void produce(int i) {};
         inline std::string getName() {return m_name;}
-        void addWorker(int i);
+        void addWorker(Pnj* worker);
+        void removeWorker();
         void triggerEvent(EventType et, bool b);
         inline void displayButton(bool b) {m_displayButton = b;}
         inline RessourcesType getType() {return m_type;}
@@ -85,7 +87,7 @@ class Building : public DrawableObject
 
         int m_counter;
         int m_necessaryClick;
-        int m_worker;
+        std::vector<Pnj*> m_workers;
         bool m_badEvent;
         bool m_goodEvent;
         bool m_displayButton;
@@ -96,6 +98,8 @@ class Building : public DrawableObject
         sf::Time m_duration;
 
         RessourcesType m_type;
+
+        sf::Music m_soundWorkDone;
 
     private:
 
