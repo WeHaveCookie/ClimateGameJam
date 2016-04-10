@@ -1,5 +1,7 @@
-"# ClimateGameJam" 
 #Rural Network
+
+![alt text](Screenshot/view.png)
+
 Rural Network est un jeu de gestion en 2D scrolling sur le thème de l’environnement et des relations de pouvoir; le joueur incarne un fermier qui doit développer son exploitation le plus respectueusement possible de la planète. 
 Pour se faire, il a à sa disposition des outils de création de terrain (des « tuiles ») ou il pourra y mettre un champ, une ferme, un abattoir ou encore un poulailler. Ces terrains servent à produire des ressources dès lors que le joueur décide d’y mettre des agriculteurs, lui permettant de continuer de se développer. 
 Il a également accès à une boutique où il peut recruter des employés ou acheter divers objets pour l’aider dans sa production mais selon le type d’objet utilisé, ils peuvent être bons ou mauvais pour le terrain sur lequel il l’utilise. Le joueur peut choisir d’utiliser des engrais, lui procurant des bonus très intéressant mais dégradant son terrain jusqu’à être totalement infertile et inutilisable. 
@@ -23,3 +25,8 @@ Le but de Rural Network est de faire comprendre au joueur que produire vert est 
   - Modificateur sur l'actualité décerné par Game in the city
   - Modificateur sur le sound design et l'intégration de son solaire
 
+#Gallery
+![alt text](Screenshot/menu.png)
+![alt text](Screenshot/barn.png)
+![alt text](Screenshot/chicken.png)
+![alt text](Screenshot/selectBuild.png)
